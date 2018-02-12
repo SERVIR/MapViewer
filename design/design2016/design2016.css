@@ -141,7 +141,7 @@
     font-family: Trebuchet MS;
     font-size: 0.8rem;
 	*/
-	color:#6a6a6a !important;
+	color:#  !important;
 	font-family: Roboto;
     font-weight: 400;
 	font-size: 14px;
@@ -280,8 +280,15 @@
     min-width: 730px !important;
     margin: 0 auto !important;
 }
+.ui.segments.servir_helper_roundedCornerAll_Override.servir_popup_chartUI_fixedWidth{
+    position:fixed;
+    height:100%;
+}
 .servir_popup_chartUI_fixedWidth
 {
+    top:0;
+    position:fixed;
+    overflow-y:scroll;
 	/*
 	max-width: 730px !important;
     min-width: 730px !important; 
@@ -294,7 +301,7 @@
 
 /* Button background colors */
 .servir_design2016_button_blue_color        {    background-color:#0489b8 !important;   }  .servir_design2016_button_blue_color:hover       {    background-color:#024554 !important;   } 
-.servir_design2016_button_green_color       {    background-color:#0caa1d !important;   }  .servir_design2016_button_green_color:hover      {    background-color:#065507 !important;   }
+.servir_design2016_button_green_color       {    background-color:steelblue !important;   }  .servir_design2016_button_green_color:hover      {    filter:contrast(400%) !important;   }
 .servir_design2016_button_chartgreen_color  {    background-color:#71a795 !important;   }  .servir_design2016_button_chartgreen_color:hover {    background-color:#486267 !important;   } /* #8fd4bd */
 .servir_design2016_button_grey_color   {    background-color:#a7a7a7 !important;   } .servir_design2016_button_grey_color:hover { background-color:#575757 !important; }
 .servir_design2016_segment_nonButton_grey_color { background-color:#f5f6f9 !important; border:transparent !important; margin:0.5rem 0 !important;}
@@ -367,7 +374,7 @@
 .servir_helper_visible { display:block; }
 .servir_helper_textColor_777777 { color:#777777 !important; }
 
-.servir_climateserv_subpage {}
+.servir_climateserv_subpage {margin-left:70%;margin-top:10%;}
 
 /* Other Pages ... (About ClimateSERV and pages like that, etc) */
 .servir_otherPages_text_mainTitle

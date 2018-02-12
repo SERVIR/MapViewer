@@ -47,7 +47,7 @@ function show_Dimmer_ForElement(the_Element, opacity)
 {   
     if(typeof(opacity)==='undefined') { opacity = g_Dimmer_Opacity; } // Default params break in safari!
     //the_Element.dimmer('setting', 'opacity', opacity).dimmer('setting', 'duration', {show:g_Dimmer_Current_ShowTime, hide:g_Dimmer_Current_HideTime}).dimmer('show');   
-    the_Element.dimmer('setting', 'opacity', opacity).dimmer('show');   
+    //the_Element.dimmer('setting', 'opacity', opacity).dimmer('show');   
 }
 function hide_Dimmer_ForElement(the_Element)                                {   the_Element.dimmer('hide');    }
 function toggle_Dimmer_ForElement(the_Element, opacity)  
@@ -173,7 +173,9 @@ function selectData_typeOfRequest_Changed(selected_Value)
     if(selected_Value == "monthly_analysis")
     {
         $("#typemenu").hide();
+        $("#typemenulabel").hide();
         $("#operationmenu").hide();
+        $("#operationmenulabel").hide();
         $("#stdate").hide();
         $("#eddate").hide();
         $("#datepickerbegin").hide();
@@ -183,7 +185,10 @@ function selectData_typeOfRequest_Changed(selected_Value)
     else if (selected_Value == "datasets") // expecting (selected_Value == "datasets") for this else... but unexpected behavior should show
     {
         $("#typemenu").show();
+        $("#typemenulabel").show();
+
         $("#operationmenu").show();
+        $("#operationmenulabel").show();
         $("#stdate").show();
         $("#eddate").show();
         $("#datepickerbegin").show();
@@ -193,7 +198,9 @@ function selectData_typeOfRequest_Changed(selected_Value)
     else
     {
         $("#operationmenu").hide();
+        $("#operationmenulabel").hide();
         $("#typemenu").hide();
+        $("#typemenulabel").hide();
         $("#stdate").hide();
         $("#eddate").hide();
         $("#datepickerbegin").hide();
@@ -1021,8 +1028,8 @@ function DisplayLayersUI() {
     if (true) {
         if(!gLayers[0])
         addLayersUI();
-        else
-       gLayers[0].setVisible(true);
+        //else
+       //gLayers[0].setVisible(true);
        // gLayers[0].setVisible(true);
 
     }
