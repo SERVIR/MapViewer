@@ -63,6 +63,7 @@
                     document.getElementById("respMenu").style.display = "none";
 
             }
+<<<<<<< HEAD
            
         </script>
         <link rel="stylesheet" href="css/home.css"/>
@@ -87,6 +88,12 @@
 
         </style>
 
+=======
+          
+        </script>
+        <link rel="stylesheet" href="css/home.css"/>
+        <script type="text/javascript" src="js/home.js"></script>
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
     </head>
     
     
@@ -198,6 +205,72 @@
                                                 <!-- Start Date [01/01/2016 v] -->
                                                 <div class="ui input"><input type="text" id="datepickerbegin" value="01/01/2016" hidden></div>
                                             </div>
+<<<<<<< HEAD
+                                        </div>
+                                        <!-- DEFAULT: End Date -->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_Default">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;display:none;" class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600" id="eddate">End Date:</div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- End Date [02/01/2016 v]-->
+                                                <div class="ui input"><input type="text" id="datepickerend" value="02/01/2016" hidden></div>
+                                            </div>
+                                        </div>
+                                        <!-- DEFAULT SelectData UI    END -->
+                                        <!--<div>  Download File?  <input type="checkbox" id="toDownload" /></div>-->
+                                        <!-- SeasonalForecast (Dynamic) SelectData UI   START -->
+                                        <!-- SeasonalForecast: [Model Ensemble Dropdown v] (?)-->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>Select a model ensemble:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- [Model Ensemble Dropdown v] (?)-->
+                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_Ensemble_ClimateModel" id="select_Ensemble_ClimateModel" onchange="select_Ensemble_Changed(this.value)">
+                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                </select>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_SelectEnsemble_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- [Variable Dropdown v] (?)-->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>Select a variable:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- [Variable Dropdown v] (?)-->
+                                                <select style="color:black;" class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_Variable_ClimateModel" id="select_Variable_ClimateModel" onchange="select_ClimateVariable_Changed(this.value, true)">
+                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                </select>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_SelectVariable_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- SeasonalForecast: Model Run Year/Month Label (?)-->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem">Current Model Run Year/Month:</div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- Model Run Year/Month Label (?)-->
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem">
+                                                    <span id="span_ModelRunYYYYMM_ClimateModel">dynamic_PLACEHOLDER</span>
+                                                </div>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_ModelRunYYYYMM_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- SeasonalForecast: Calculations -->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>Calculations:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- [Calculations Dropdown v] (?)-->
+                                                <select style="color:black;" class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_OperationType_ClimateModel" id="select_OperationType_ClimateModel">
+                                                    <option value="0">Max</option>
+                                                    <option value="1">Min</option>
+                                                    <option value="5" selected="selected">Average</option>
+=======
                                         </div>
                                         <!-- DEFAULT: End Date -->
                                         <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_Default">
@@ -266,6 +339,25 @@
                                                 <!-- <i id="helpIcon_SelectData_Seasonal_Calculations_ToolTip" class="help circle icon"></i>-->
                                             </div>
                                         </div>
+                                        <!-- SeasonalForecast: Date Interval Dropdown -->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>Date Interval:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- [Date Interval Dropdown v] (?)-->
+                                                <select style="color:black;" class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_dateintervalmenu_ClimateModel" id="select_dateintervalmenu_ClimateModel">
+                                                    <option value="0">Daily</option>
+                                                    <!--
+                    <option value="1">Monthly</option>
+                    <option value="2">Yearly</option>
+                    -->
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
+                                                </select>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_Calculations_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+<<<<<<< HEAD
                                         <!-- SeasonalForecast: Date Interval Dropdown -->
                                         <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
                                             <div class="five wide right aligned column">
@@ -368,6 +460,93 @@
                                 <br />
                                 <label style="margin-left:12px;font-family:Calibri">Click layer name for opacity & more!</label>
 
+=======
+                                        <!-- SeasonalForecast: Select Forecast Range: Max Days: 180 Label-->
+                                        <div style="color:black;" class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div class="servir_helper_topPadding_075rem"><b>Select Forecast Range:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- Model Run Year/Month Label (?)-->
+                                                <div class="servir_helper_topPadding_075rem">
+                                                    <span id="span_MaxDays_Label">Max Days: 180</span>
+                                                </div>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_ModelRunYYYYMM_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- SeasonalForecast: Start Date -->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>From:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- From  Date [01/01/2016 F001 v] -->
+                                                <select style="color:black;" class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_RangeFrom_ClimateModel" id="select_RangeFrom_ClimateModel" onchange="select_RangeFrom_Changed(this.value, true)">
+                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                </select>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_FromDate_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- SeasonalForecast: End Date -->
+                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="five wide right aligned column">
+                                                <div style="color:black;" class="servir_helper_topPadding_075rem"><b>To:</b></div>
+                                            </div>
+                                            <div class="eleven wide left aligned column">
+                                                <!-- From  Date [01/01/2016 F001 v] -->
+                                                <select style="color:black;" class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_RangeTo_ClimateModel" id="select_RangeTo_ClimateModel" onchange="select_RangeTo_Changed(this.value, true)">
+                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                </select>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_ToDate_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                        </div>
+                                        <!-- SeasonalForecast: Disclaimer -->
+                                        <div class="three column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                            <div class="one wide right aligned column"></div>
+                                            <div style="color:black;" class="fourteen wide left aligned column">
+                                                <div style="margin-left:40px;">
+                                                    Disclaimer: This data represents a seasonal prediction and under no circumstances should be construed as a weather forecast product. It is developed primarily as a daily representation of NMME monthly forecasts and should be used for comparison against historical trends.
+                                                </div>
+                                                <!-- <i id="helpIcon_SelectData_Seasonal_Disclaimer_ToolTip" class="help circle icon"></i>-->
+                                            </div>
+                                            <div class="one wide right aligned column"></div>
+                                        </div>
+                                        <!-- SeasonalForecast (Dynamic) SelectData UI   END -->
+
+                                        <div class="servir_helper_topPadding_10rem">
+                                            <!-- Button: Get Data, 'CANCEL' -->
+                                            <button class="ui button servir_design2016_button_grey_color servir_helper_width_112rem servir_helper_roundedCornerAll_Button" onclick="event_SelectData_ReDraw_Button_Clicked();">
+                                                <div class="center">
+                                                    <div class="servir_text_button_main" id="resetButton" onclick="resetAll();">RESET</div>
+                                                </div>
+                                            </button>
+                                            <br />      <br />                             <!-- Button: Get Data, 'GET DATA' servir_helper_width_112rem -->
+                                            <button class="ui button servir_design2016_button_green_color servir_helper_roundedCornerAll_Button" onclick="downloadClicked();" id="downloadData">
+                                                <div class="center">
+                                                    <div class="servir_text_button_main">DOWNLOAD DATA</div>
+                                                </div>
+                                            </button>
+                                            <br /><br />
+                                            <button class="ui button servir_design2016_button_green_color servir_helper_roundedCornerAll_Button" onclick="generateClicked();" id="submitTextMain">
+                                                <div class="center">
+                                                    <div class="servir_text_button_main">GENERATE GRAPH</div>
+                                                </div>
+                                            </button>
+                                        </div>
+</div>
+                                <label class="data_expandable">Watersheds</label>
+                                <div class="data_panel"></div>
+                            </div>
+                            <div class="t_panel_layer hide">
+
+                                <a class="slide_button layer" href="#" style="float:right;"><img src="img/main/hide1.png" width="30" height="30" /></a>
+
+                                <br />
+                                <input type="text" id="myInput" onkeyup="search()" placeholder="Search for layers.." title="Type in a layername">
+                                <br />
+                                <label style="margin-left:12px;font-family:Calibri">Click layer name for opacity & more!</label>
+
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
                                 <div id="toggle" style="padding: 2px 20px;color:black;"></div>
                             </div>
                             <div class="t_panel_maps hide" >
@@ -408,8 +587,13 @@
                                <div id="d_img" style="text-align:center;display:inline-block;padding:0 15px;"><a id="data_icon" class="show" href="#"><img id="d_image" class="main_icons" src="img/main/yellowdownload.png" alt="Data"><br /><label style="font-weight:bold;padding-left:10px;color:#f5ab63;">Data</label></a></div>
                         </div>
 
+<<<<<<< HEAD
                             <div style="margin-left:400px;" hidden>
                                 <button id="play" type="button" >Play</button>
+=======
+                            <div style="margin-left:400px;">
+                                <button id="play" type="button">Play</button>
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
                                 <button id="pause" type="button">Pause</button>
                                 <span id="info"></span>
                             </div>
@@ -675,9 +859,15 @@
                                     </div>
                                 </div>
                             </div>
+<<<<<<< HEAD
 
                             <!-- Another Sub Page Container could go at this level. -->
 
+=======
+
+                            <!-- Another Sub Page Container could go at this level. -->
+
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
                         </div>
                         <div class='servir_topMap_Message_Container servir_helper_hidden' id='div_MapMessageContainer'>
                             <div class="ui yellow message servir_helper_hidden" id='div_MapMessage_AnotherMessage'>
@@ -784,6 +974,9 @@
 <script src="js/timeline.js"></script>
 <script type="text/javascript" src="js/addLayers.js"></script>
 <script>
+    $('.timebutton, .timeslider').click(function () {
+        $('.timeslider').toggleClass('close');
+    });
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

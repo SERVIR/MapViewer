@@ -1,0 +1,501 @@
+<<<<<<< HEAD
+﻿
+=======
+﻿  
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
+            .basemaps{
+                color:peru;
+            }
+            .steelblue{
+                margin-left:40px;
+                color:steelblue;
+                font-size:large;
+            }
+            .data_expandable,.data_expandable:not( :hover ) {
+    color: steelblue;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: x-large;
+    transition: 0.4s;
+   display:block;
+}
+
+.active, .data_expandable:hover {
+    text-decoration:underline;
+    filter:contrast(450%);
+}
+
+.data_panel {
+    padding: 20px 18px 20px 0;
+    display: none;
+    background-color: lightyellow;
+    overflow: hidden;
+}
+            .spacing{
+                height:50px;
+            }
+            body{
+                width:100%;
+            }
+            .aboutus_modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.about-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+/* The Close Button */
+.aboutus_close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.aboutus_close:hover,
+.aboutus_close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+            .ol-zoom {
+          left:97%;
+            }
+            .main_icons {
+                width: 40px;
+                height: 40px;
+                margin-left: 15px;
+                margin-top: 15px;
+            }
+            #layer_icon,#basemap_icon,#data_icon{
+                width:40px;
+                height:40px;
+            }
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                padding-top: 100px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 40%;
+                top: auto;
+                bottom: auto;
+                height: 80%;
+                overflow-y: scroll;
+            }
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            #toggle{
+                text-align:left;
+            }
+            .layer_label {
+                width: 100px;
+                display: inline-block;
+            }
+            .panel {
+                top: 0px;
+                width: 400px;
+                float: left;
+                height: 100%;
+                background: lightyellow;
+                position: fixed;
+                right: -398px;
+                padding-top: 30px;
+                border-left: 1px solid grey;
+            }
+
+            #myInput {
+                background-position: 10px 12px;
+                background-repeat: no-repeat;
+                width: 90%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                border: 1px solid #ddd;
+                margin-bottom: 12px;
+                margin-left: 12px;
+                color: black;
+            }
+            .t_panel {
+                width: 300px;
+                float: left;
+                height: 100%;
+                background: lightyellow;
+                position: fixed;
+                left: -360px;
+                top:90px;
+                overflow-y:scroll;
+                padding-bottom:200px;
+                
+            }
+
+            .t_panel_layer {
+                width: 300px;
+                float: left;
+                height: 100%;
+                background: lightyellow;
+                position: fixed;
+                left: -360px;
+                top:90px;   
+                overflow-y:scroll;
+                padding-bottom:200px;
+            }
+             .t_panel_maps {
+                width: 300px;
+                float: left;
+                height: 100%;
+                background: lightyellow;
+                position: fixed;
+                left: -360px;
+                top:90px; 
+                text-align:center; 
+                overflow-x:scroll;
+                padding-bottom:200px; 
+                font-size:large;
+                color:peru;
+            }
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: white;
+                color: black;
+                text-align: center;
+                border-top: 1px solid grey;
+                z-index: 300;
+            }
+
+            .ismobile{
+                display:none;
+                height:200px;
+                width:200px;
+            }
+            .icon-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                overflow: auto;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+            .icon-content a {
+                color: cadetblue;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+            .iconResponsive {
+                display: none;
+                color: cadetblue;
+                font-size: 20px;
+            }
+            #popup_SelectData_DataSource_ToolTip1,#popup_SelectData_Calculations_ToolTip1{
+                display:none;
+            }
+             #tt1,#tt2{
+                    display:none;
+                }
+            #tt1_close, #tt2_close {
+                display: none;
+            }
+            .ui.dropdown.servir_helper_stretchDropdown_70pct {
+                margin-left: 40px;
+                margin-top: 5px;
+                margin-bottom:20px;
+            }
+            .ui.input {
+                margin-left: 40px;
+                margin-top: 20px;
+            }
+            .servir_helper_topPadding_075rem {
+                margin-left: 40px;
+                margin-top: 20px;
+            }
+            .servir_helper_topPadding_10rem, .ui.button {
+                margin-left: auto;
+                margin-right:auto;
+                margin-top: 20px;
+                width: 200px;
+            }
+
+            @media only screen and (max-height: 600px) and (max-width: 1000px) {
+
+
+                /*#popup_SelectData_DataSource_ToolTip1,#popup_SelectData_Calculations_ToolTip1{
+                    display:block;
+                }
+                 #popup_SelectData_DataSource_ToolTip,#popup_SelectData_Calculations_ToolTip{
+                     display:none;
+                 }
+                          #subPage_GetStarted {
+height: 100%;
+                    left: 0;
+                    position: absolute;
+                    overflow-y: scroll;
+                }*/
+            }
+
+            @media only screen and (max-height: 880px) and (max-width: 1000px) {
+
+                #subPage_SelectData {
+                    height: 100%;
+                    left: 0;
+                    position: absolute;
+                    overflow-y: scroll;
+                }
+            }
+
+            @media only screen and (max-width: 1000px) {
+
+                #popup_SelectData_DataSource_ToolTip1, #popup_SelectData_Calculations_ToolTip1 {
+                    display: block;
+                }
+
+                #tt1_close, #tt2_close {
+                    display: block;
+                }
+
+                .servir_helper_topPadding_075rem {
+                    width: 160%;
+                    text-align: start;
+                }
+
+                    .servir_helper_topPadding_075rem.servir_text_helper_fontWeight_600 {
+                        width: 140%;
+                        text-align: center;
+                    }
+
+                .servir_helper_width_112rem, .ui.button.servir_design2016_button_green_color.servir_helper_roundedCornerAll_Button {
+                    width: 100%;
+                }
+
+                #helpIcon_SelectData_DataSource_ToolTip, #helpIcon_SelectData_Calculations_ToolTip {
+                    padding-top: 5px;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .iconResponsive {
+                    right: 35px;
+                    display: inline;
+                    height: 10px;
+                    padding-right: 10px;
+                }
+
+                servir_helper_topPadding_075rem {
+                    width: 100%;
+                    height: 50px;
+                    text-align: start;
+                }
+
+                .ui.dropdown.servir_helper_stretchDropdown_70pct {
+                    width: 100%;
+                }
+
+                .ui.input {
+                    width: 100%;
+                }
+
+                .five.wide.right.aligned.column {
+                    text-align: center;
+                    margin-left: 32%;
+                    width: 100%;
+                    padding: 10px;
+                }
+
+                .eleven.wide.left.aligned.column {
+                    min-width: 100%;
+                    margin: auto;
+                }
+
+                .servir_popup_getStarted_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                }
+
+                .servir_popup_selectArea_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                    min-height: 100%;
+                    overflow: scroll;
+                }
+
+                .servir_popup_selectData_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    min-height: 100%;
+                    margin: 0 auto !important;
+                    overflow: scroll;
+                }
+
+                #datepickerbegin, #datepickerend {
+                    width: 100%;
+                }
+
+                .servir_popup_jobProgress_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                    overflow: scroll;
+                    height: 100%;
+                }
+
+                .servir_popup_chartUI_fixedWidth {
+                    /*
+	                max-width: 730px !important;
+                    min-width: 730px !important; 
+	                */
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                    overflow: scroll;
+                    height: 100%;
+                }
+
+                #logo-servir {
+                    display: none;
+                }
+
+                #logo_header {
+                    display: none;
+                }
+
+                .servir_helper_topMargin_01em {
+                    margin-left: 70%;
+                }
+
+                .servir_text_welcome_header {
+                    color: #AAAAAA !important;
+                    /* font-family: 'Open Sans', Arial, Helvetice Neue, sans-serif;  */ /*    font-family: Trebuchet MS;*/
+                    /* font-size: 3.2rem; */
+                    font-weight: 100;
+                    font-family: roboto;
+                    font-size: 45px;
+                    width: 90%;
+                    margin-left: 5%;
+                }
+
+                #for500 {
+                    display: none;
+                }
+
+                #footer_img {
+                    margin-left: 15%;
+                }
+
+                .reduce {
+                    display: none;
+                }
+
+                .servir_helper_noScroll_Vert {
+                    position: fixed;
+                }
+
+                #chartUI_ButtonContainer_Back,
+                #chartUI_ButtonContainer_ExportToPNG,
+                #chartUI_ButtonContainer_ExportToCSV, #chartUI_ButtonContainer_ExportPolygon {
+                    display: none;
+                }
+
+                #get_started {
+                    width: 70%;
+                }
+
+                #tt1 {
+                    display: none;
+                    font-size: 12px;
+                    background-color: black;
+                    color: white;
+                    padding: 5px;
+                    top: 100px;
+                    width: 300px;
+                    position: fixed;
+                    z-index: 10;
+                    height: 350px;
+                    margin: 7%;
+                }
+
+                #tt2 {
+                    display: none;
+                    font-size: 12px;
+                    background-color: black;
+                    color: white;
+                    padding: 5px;
+                    top: 100px;
+                    width: 300px;
+                    position: fixed;
+                    z-index: 10;
+                    height: 300px;
+                    margin: 7%;
+                }
+            }
+            #chg{
+                height:50px;
+                position:fixed;
+                z-index:10;
+                right:60px;
+                top:10px;
+                border-style:double;
+                border-width:5px;
+                border-color:black;
+            }
+            .maps_imgs {
+                padding: 10px;
+                border-color: black;
+            }
+            .maps_imgs:hover {
+               filter:contrast(40%);
+            }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 0842c81b478d787a6c45c6b2facd881008ce752b
