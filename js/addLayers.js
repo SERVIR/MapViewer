@@ -343,23 +343,25 @@ function addLayersUI() {
         time.style.opacity = 0.5;
         time.onclick = function () {
             time.classList.toggle("active");
-
+           
             if (time.classList.contains("active")) {
+                $(".timerclass").show();
                 $('.timeslider').removeClass('close');
                 time.style.opacity = 1;
                 var iden = this.parentNode.id;
 
                 for (var d = 0; d < idArr.length; d++) {
                     if (idArr[d] == iden) {
-                        turl = layerArray[d].url;
-                        tlyr = layerArray[d].layers;
-                        currLayer = layer;
-                        setTime();
+                        urlt1 = layerArray[d].url;
+                        urlfortimeline = layer;
+                       // tlyr = layerArray[d].layers;
+                        //currLayer = layer;
+                     //   setTime();
                     }
                 }
 
             }
-            else { $('.timeslider').addClass('close'); time.style.opacity = 0.5; }
+            else { $(".timerclass").hide(); $('.timeslider').addClass('close'); time.style.opacity = 0.5; }
 
         };
         time.style.position = "absolute";
