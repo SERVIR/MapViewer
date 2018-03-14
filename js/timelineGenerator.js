@@ -154,7 +154,8 @@ to = $("#to").datepicker({
         let yearslider = document.querySelector("#yearslider");
         let output = document.querySelector("#rangevalue");
         yearslider.value = years_new[yindex];
-        output.value = years1[yindex];
+        if (years1[yindex]!=undefined)
+            output.value =years1[yindex];
         yindex = yindex + 1;
         var e = document.getElementById("fromtime");
         var strUser = e.options[e.selectedIndex].value;
@@ -169,7 +170,7 @@ to = $("#to").datepicker({
     }
     $("#play").on('click', function () {
 
-
+        document.getElementById("status").innerHTML = "Status: Playing..";
 
         if (slidingId !== null) {
             window.clearInterval(slidingId);
@@ -186,10 +187,13 @@ to = $("#to").datepicker({
 
     });
     $("#pause").on('click', function () {
+        document.getElementById("status").innerHTML = "Status: Paused!";
+
         let yearslider = document.querySelector("#yearslider");
         let output = document.querySelector("#rangevalue");
         yearslider.value = years_new[yindex];
-        output.value = years1[yindex];
+        if (years1[yindex] != undefined)
+            output.value = years1[yindex];
         if (slidingId !== null) {
             window.clearInterval(slidingId);
             slidingId = null;

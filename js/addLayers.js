@@ -269,6 +269,7 @@ function addLayersUI() {
         input.max = 1;
         input.step = 0.1;
         input.value = 1;
+        input.style.width = "60%";
         input.onchange = function () {
 
             layer.setOpacity(input.value);

@@ -111,7 +111,7 @@
 <body class="servir_helper_noScroll_Vert" style="background-color:black;">
  <div id="timelineDiv" class="timeslider close">
      <span id="info" hidden>timewhere</span>
-
+     <label class="timerclass" id="status" style="color:white;left:32%;position:fixed;">Status: None</label>
      <label for="from" class="timerclass">From</label>
      <input type="text" id="from" name="from" class="timerclass">
      <select id="fromtime" class="time timerclass" hidden></select>
@@ -127,7 +127,7 @@
      <a id="pause" class="timerclass" href="#"><img src="img/timeline/pausebutton.png" width="40" height="40" /></a>
      <input id="yearslider" class="range blue timerclass" type="range" step="1" list="ticks" value="0">
      <datalist class="timerclass" id="ticks"></datalist>
-     <output class="timerclass" id="rangevalue" style="color:white">Current Date:</output>
+     <output class="timerclass" id="rangevalue" style="color:white"></output>
  </div>
 <!-- Full Page Framework -->
     <div class="ui grid servir_helper_topbotMargin_0">
