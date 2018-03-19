@@ -101,7 +101,9 @@
                 width: 60%;
                 height: 40px;
             }
-
+            .timerclass.PlayORPause {
+               visibility:hidden;
+            }
        </style>
 
     </head>
@@ -123,7 +125,7 @@
      <!--<button id="pause" class="timerclass">Pause</button>-->
      <!--<button id="start" onclick="loadXMLDoc();">Populate dates</button>-->
      <br />
-     <a id="play" class="timerclass" href="#"><img src="img/timeline/playbutton.png" width="40" height="40" /></a>
+     <a id="play" class="timerclass" href="#" style="position:inherit;top:30%;"><img src="img/timeline/playbutton.png" width="40" height="40" /></a>
      <a id="pause" class="timerclass" href="#"><img src="img/timeline/pausebutton.png" width="40" height="40" /></a>
      <input id="yearslider" class="range blue timerclass" type="range" step="1" list="ticks" value="0">
      <datalist class="timerclass" id="ticks"></datalist>

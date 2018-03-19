@@ -168,7 +168,10 @@ to = $("#to").datepicker({
         startDate = new Date(years1[yindex]);
         endDate = enddatepicker;
     }
+    $("#pause").addClass("PlayORPause");
     $("#play").on('click', function () {
+        $("#play").addClass("PlayORPause");
+        $("#pause").removeClass("PlayORPause");
 
         document.getElementById("status").innerHTML = "Status: Playing..";
 
@@ -187,6 +190,9 @@ to = $("#to").datepicker({
 
     });
     $("#pause").on('click', function () {
+        $("#pause").addClass("PlayORPause");
+            $("#play").removeClass("PlayORPause");
+
         document.getElementById("status").innerHTML = "Status: Paused!";
 
         let yearslider = document.querySelector("#yearslider");
