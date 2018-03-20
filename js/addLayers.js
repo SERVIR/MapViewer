@@ -414,7 +414,7 @@ function addLayersUI() {
         label.onclick = function () {
             $("#mc" + n).slideToggle();
             menus.style.display = "";
-            li[i].getElementsByTagName("div")[j].style.visibility = "visible";
+            menucon.style.visibility = "visible";
             return false;
         };
 
