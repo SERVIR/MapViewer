@@ -234,13 +234,16 @@ function addLayer(layerName, layerid, visible) {
 }
 
 var gLayers = [];
+var wmsSource=[],wmsName=[];
+
 function addLayersUI() {
+    
     var layerarr = [];
     var x = 0;
     var idArr = [];
     var catArr = [];
     var nameArr = [];
-
+  
     for (var c = 0; c < layerArray.length; c++) {
         var ll = new ol.layer.Tile({
 
@@ -284,9 +287,27 @@ function addLayersUI() {
         checkbox.name = "checkBox" + n;
         checkbox.value = n;
         checkbox.id = "check";
+        checkbox.className = "check";
         checkbox.checked = false;
         checkbox.onchange = function () {
             layer.setVisible(this.checked);
+            if (this.checked) {
+                wmsSource.push(layer);
+                wmsName.push(this.parentNode.className);
+            }
+            else {
+                var indexS = wmsSource.indexOf(layer);
+                if (indexS >= 0) {
+                    wmsSource.splice(indexS, 1);
+                }
+                var indexN = wmsName.indexOf(this.parentNode.className);
+                if (indexN >= 0) {
+                    wmsName.splice(indexN, 1);
+                }
+                overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            }
         };
 
         var iDiv = document.createElement('div');
@@ -335,6 +356,8 @@ function addLayersUI() {
         label.style.display = "inline-block";
 
         label.style.fontSize = "large";
+
+
         var time = document.createElement('a');
         time.setAttribute("href", "#");
         time.id = "time" + n;
@@ -355,6 +378,7 @@ function addLayersUI() {
                     if (idArr[d] == iden) {
                         urlt1 = layerArray[d].url;
                         urlfortimeline = layer;
+
                        // tlyr = layerArray[d].layers;
                         //currLayer = layer;
                      //   setTime();
@@ -444,10 +468,85 @@ function addLayersUI() {
 
 
 }
+var container = document.getElementById('popup');
+var content = document.getElementById('popup-content');
+content.innerHTML = "";
+var closer = document.getElementById('popup-closer');
+var overlay = new ol.Overlay({
+    element: container,
+    autoPan: true,
+    autoPanAnimation: {
+        duration: 250
+    }
+});
+map.addOverlay(overlay);
+closer.onclick = function () {
+    overlay.setPosition(undefined);
+    closer.blur();
+    return false;
+};
+map.on('singleclick', function (evt) {
+    var cc = 0;
+    var cboxes = document.getElementsByClassName("check");
+    for (var i = 0; i < cboxes.length; i++) {
+        if (cboxes[i].checked) {
+            cc++;
+        }
+        
+    }
+    content.innerHTML = "";
+    for (var i = 0; i < cc; i++) {
 
+        var x = 0;
 
+        var viewResolution = view.getResolution();
+        var s_url = wmsSource[i].getSource().getGetFeatureInfoUrl(
+                  evt.coordinate, viewResolution, 'EPSG:3857',
+                  { 'INFO_FORMAT': 'text/html' });
+        if (s_url) {
 
+            content.innerHTML = content.innerHTML + wmsName[i] + '<input type="checkbox" id="pop_check' + i + '" name="pop_check' + i + '" checked/><br/><iframe  id="pop_' + i + '" seamless src="' + s_url + '"></iframe><br/>';
+            //content.innerHTML = '<iframe seamless src="' + s_url + '"></iframe>';
+            for (x = 0; x < cc; x++) {
+                $('#pop_check' + x).change(function () {
 
+                    if ($(this).is(":checked")) {
+                        $('#pop_' + this.name.slice(-1)).show();
+                        return;
+                    }
+                    else $('#pop_' + this.name.slice(-1)).hide();
+
+                });
+            }
+           
+
+            //('pop_check' + i).change = function () {
+            //    if (this.checked) alert('hhi');
+            //    myfun(i);
+            //}
+                
+
+        }
+        var coordinate = evt.coordinate;
+        overlay.setPosition(coordinate);
+    }
+});
+
+function myfun(str) {
+    alert(document.getElementsByName('pop_check' + str)[0].checked)
+
+    if (document.getElementsByName('pop_check' + str)[0].checked) {
+       // alert(str);
+      
+
+        $('#pop_' + str).show();
+    }
+
+    else {
+        alert("pop_" + str);
+        $('#pop_' + str).hide();
+    }
+}
 function setMapType(type) {
 
     //to add it again to position 0 (layerName is the variable name you assigned the layer to
