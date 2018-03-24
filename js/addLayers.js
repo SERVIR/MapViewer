@@ -294,6 +294,10 @@ function addLayersUI() {
             if (this.checked) {
                 wmsSource.push(layer);
                 wmsName.push(this.parentNode.className);
+                overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            
             }
             else {
                 var indexS = wmsSource.indexOf(layer);
