@@ -1,4 +1,5 @@
-﻿var currLayer;
+﻿
+var currLayer;
 function slideLeft(element) {
     $(element).animate({
         left: "-=360"

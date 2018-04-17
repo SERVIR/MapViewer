@@ -1,5 +1,4 @@
 ﻿
-
 var acc = document.getElementsByClassName("data_expandable");
 var i;
 
@@ -290,16 +289,16 @@ function addLayersUI() {
         checkbox.className = "check";
         checkbox.checked = false;
         checkbox.onchange = function () {
+          
             layer.setVisible(this.checked);
             if (this.checked) {
                 wmsSource.push(layer);
                 wmsName.push(this.parentNode.className);
-                overlay.setPosition(undefined);
-                closer.blur();
-                return false;
+               
             
             }
             else {
+                var temp = "";
                 var indexS = wmsSource.indexOf(layer);
                 if (indexS >= 0) {
                     wmsSource.splice(indexS, 1);
@@ -308,10 +307,41 @@ function addLayersUI() {
                 if (indexN >= 0) {
                     wmsName.splice(indexN, 1);
                 }
-                overlay.setPosition(undefined);
-                closer.blur();
-                return false;
+                var tabcon = document.getElementsByClassName("tablinks");
+               
+                var cnt = 0;
+                for (cnt = 0; cnt < tabcon.length; cnt++) {
+                     temp = tabcon[cnt].id;
+                    if (tabcon[cnt].innerHTML == this.parentNode.className) {
+                      //  alert(tabcon[cnt].id);
+                       // alert("tab" + tabcon[cnt].id.slice(-1));
+                      
+                        tabcon[cnt].parentNode.removeChild(document.getElementById(temp));
+                       // alert("removed " + temp);
+                        
+                      
+                        
+                    }
+                }
+                var popcon = document.getElementById("popup-content").childNodes;
+              //  alert(popcon[0].id);
+                var icnt;
+                for (icnt = 0; icnt < popcon.length; icnt++) {
+                    if (popcon[icnt].id == "tab" + temp.slice(-1)) {
+                        popcon[icnt].parentNode.removeChild(document.getElementById("tab" + temp.slice(-1)));
+                    //    alert("removed " + "tab" + temp.slice(-1));
+                    }
+                }
+
+               
+           
             }
+     
+            
+            
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
         };
 
         var iDiv = document.createElement('div');
@@ -474,7 +504,10 @@ function addLayersUI() {
 }
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
-content.innerHTML = "";
+var tabdiv = document.createElement('div');
+tabdiv.id = "tab";
+//content.insertBefore(tabdiv,content.childNodes[0]);
+//content.innerHTML = "";
 var closer = document.getElementById('popup-closer');
 var overlay = new ol.Overlay({
     element: container,
@@ -490,6 +523,8 @@ closer.onclick = function () {
     return false;
 };
 map.on('singleclick', function (evt) {
+   
+
     var cc = 0;
     var cboxes = document.getElementsByClassName("check");
     for (var i = 0; i < cboxes.length; i++) {
@@ -498,7 +533,7 @@ map.on('singleclick', function (evt) {
         }
         
     }
-    content.innerHTML = "";
+   // content.innerHTML = "";
     for (var i = 0; i < cc; i++) {
 
         var x = 0;
@@ -509,35 +544,71 @@ map.on('singleclick', function (evt) {
                   { 'INFO_FORMAT': 'text/html' });
         if (s_url) {
 
-            content.innerHTML = content.innerHTML + wmsName[i] + '<input type="checkbox" id="pop_check' + i + '" name="pop_check' + i + '" checked/><br/><iframe  id="pop_' + i + '" seamless src="' + s_url + '"></iframe><br/>';
-            //content.innerHTML = '<iframe seamless src="' + s_url + '"></iframe>';
-            for (x = 0; x < cc; x++) {
-                $('#pop_check' + x).change(function () {
+            var parent = document.createElement("div");
+            parent.id = "tab" + i;
+            parent.className = "tabcontent";
+            var child_head = document.createElement("h5");
+            child_head.innerHTML = wmsName[i]+": Details";
+            var child_body = document.createElement("div");
+            child_body.innerHTML = '<iframe id="'+"iframe"+i+'" seamless src="' + s_url + '"></iframe>';
 
-                    if ($(this).is(":checked")) {
-                        $('#pop_' + this.name.slice(-1)).show();
-                        return;
-                    }
-                    else $('#pop_' + this.name.slice(-1)).hide();
-
-                });
-            }
+            parent.appendChild(child_head);
+            parent.appendChild(child_body);
            
+            var button = document.createElement("button");
+            var button_text = document.createTextNode(wmsName[i]);
+            button.appendChild(button_text);
 
-            //('pop_check' + i).change = function () {
-            //    if (this.checked) alert('hhi');
-            //    myfun(i);
-            //}
-                
+            button.className = "tablinks";
+            button.id = "button" + i;
+            button.onclick = function (evt) {
+                var ivar, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (ivar = 0; ivar < tabcontent.length; ivar++) {
+                    tabcontent[ivar].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (ivar = 0; ivar < tablinks.length; ivar++) {
+                    tablinks[ivar].className = tablinks[ivar].className.replace(" active", "");
+                }
+              document.getElementById("tab" + this.id.slice(-1)).style.display = "block";
+                evt.currentTarget.className += " active";
+            };
+           
+            if (document.body.contains(document.getElementById("button" + i))) {
 
+                content.replaceChild(parent, content.childNodes[i]);
+               // tabdiv.replaceChild(button,tabdiv.childNodes[i]);
+                /*githika content.innerHTML = content.innerHTML + wmsName[i] + '<input type="checkbox" id="pop_check' + i + '" name="pop_check' + i + '" checked/><br/><iframe  id="pop_' + i + '" seamless src="' + s_url + '"></iframe><br/>';
+                 for (x = 0; x < cc; x++) {
+                     $('#pop_check' + x).change(function () {
+     
+                         if ($(this).is(":checked")) {
+                             $('#pop_' + this.name.slice(-1)).show();
+                             return;
+                         }
+                         else $('#pop_' + this.name.slice(-1)).hide();
+     
+                     });
+                 }githika*/
+               
+            }
+            else {
+                tabdiv.appendChild(button);
+                content.appendChild(parent);
+               // tabdiv.appendChild(button);
+            }
+            content.insertBefore(tabdiv,content.childNodes[0]);
+            document.getElementById("button0").click();
         }
         var coordinate = evt.coordinate;
         overlay.setPosition(coordinate);
+     
     }
 });
 
 function myfun(str) {
-    alert(document.getElementsByName('pop_check' + str)[0].checked)
+  //  alert(document.getElementsByName('pop_check' + str)[0].checked)
 
     if (document.getElementsByName('pop_check' + str)[0].checked) {
        // alert(str);
@@ -547,7 +618,7 @@ function myfun(str) {
     }
 
     else {
-        alert("pop_" + str);
+    //    alert("pop_" + str);
         $('#pop_' + str).hide();
     }
 }

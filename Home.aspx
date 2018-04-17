@@ -1,3 +1,5 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="Home" %>
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -844,25 +846,7 @@
     ga('create', 'UA-27020636-4', 'auto');
     ga('send', 'pageview');
 
-  //  document.getElementById("metadata_url").innerHTML = doc;
-    $(document).ready(function () {;
-        $.ajax({
-            type: "GET",
-            url: "https://www.servirglobal.net/DesktopModules/GeoPortalMetaDataViewer/XmlDownload.aspx",
-            dataType: "xml",
-            success: function (xmlObj) {
-                var fileSystemObject = new ActiveXObject("Scripting.FileSystemObject");
-                varFileObject = fileSystemObject.OpenTextFile("D:\\testing2\\UserInfo.xml", 2, true, 0);
-                varFileObject.write(xmlObj.xml);
-                varFileObject.close();
-                alert("Download complete");
-                close();
-            },
-            error: function () {
-                alert("Download failed. Please contact the administrator.");
-            }
-        });
-    });
+  
 </script>
 </body>
 </html>

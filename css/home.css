@@ -1,6 +1,45 @@
-﻿  .ol-popup {
+﻿  
+
+#tab {
+   display:inline-flex;
+    overflow: hidden;
+    border: 1px solid steelblue;
+    background-color: #f1f1f1;
+   color:peru;
+}
+
+/* Style the buttons inside the tab */
+#tab .tablinks {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+     text-decoration:none;
+}
+
+/* Change background color of buttons on hover */
+#tab .tablinks:hover {
+    background-color: lightsteelblue;
+}
+
+/* Create an active/current tablink class */
+#tab .tablinks.active {
+    background-color: steelblue;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    color:peru;
+}
+
+.ol-popup {
         position: absolute;
-        background-color: white;
+        background-color: lightyellow;
         -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
         filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
         padding: 15px;
