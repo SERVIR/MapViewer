@@ -57,23 +57,23 @@ compareFunction = function (a,b){
 // Cris Squared Refactor 2016 - Added a Choice to editing local mode on page load
 var confirm_value = false;
 //console.log("window.location.hostname: " + window.location.hostname); 
-if (window.location.hostname === 'localhost')  // This breaks for 'file:///' loads.. but thats ok!
-{
-    confirm_value = confirm("Use Localhost API Server?  Select 'OK' to use the localhost as the data source for API Server.  Select 'cancel' to use the Live Server");
-}
-if(confirm_value == true)
-{
+////if (window.location.hostname === 'localhost')  // This breaks for 'file:///' loads.. but thats ok!
+////{
+////    confirm_value = confirm("Use Localhost API Server?  Select 'OK' to use the localhost as the data source for API Server.  Select 'cancel' to use the Live Server");
+////}
+////if(confirm_value == true)
+////{
  
-    isLocalMode = true;
-    var baseurl = "http://localhost/";
-    var baserequesturl = "http://localhost:8000/";
+////    isLocalMode = true;
+////    var baseurl = "http://localhost/";
+////    var baserequesturl = "http://localhost:8000/";
  
-    // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
-    //var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map"; // jeburks dev
-    //var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/kris/work/SERVIR/data/GIS/mapfiles/servir.map"; // ks dev
-    var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/kris/work/SERVIR/data/GIS/mapfiles/servir.map"; // ks dev
+////    // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
+////    //var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map"; // jeburks dev
+////    //var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/kris/work/SERVIR/data/GIS/mapfiles/servir.map"; // ks dev
+////    var baseWMSurl = "http://localhost/cgi-bin/mapserv?map=/Users/kris/work/SERVIR/data/GIS/mapfiles/servir.map"; // ks dev
     
-} else {
+////} else {
     isLocalMode = false;
     //var baseurl = "http://climateserv.servirglobal.net/";
     //var baserequesturl = "http://chirps.nsstc.nasa.gov/chirps/";
@@ -86,7 +86,7 @@ if(confirm_value == true)
     // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
     //var baseWMSurl = "http://"+hostName+"/cgi-bin/servirmap?";
     var baseWMSurl = "https://"+hostName+"/cgi-bin/servirmap_102100?";
-}
+////}
 
 
 // KS Refactor 2015 // Get Climate model info from the server and do init related to all of that

@@ -195,8 +195,37 @@ var map = new ol.Map(
     view: view
 
 });
+setTimeout(addParamLayer, 500);
 
+//metadata_url: https://gis1.servirglobal.net/displaywms/?baseurl={onlineresourceurl}&contents={layername}&metadataid={metadataid}
+function addParamLayer() {
+    var test = false;
+   // alert(decodeURIComponent("https%3A%2F%2Fgis1.servirglobal.net%2Farcgis%2Fservices%2FGlobal%2FMODIS_Landcover_Type1_2001%2FMapServer%2FWMSServer&contents=0&metadataid=44"));
+    var base = decodeURIComponent(getQueryVariable("baseurl"));
+    var lyr = getQueryVariable("contents");
+  
+    if (getQueryVariable("contents") == 0) {
+         test = true;
+    }
+    if (getQueryVariable("baseurl") != false && test && getQueryVariable("metadataid") != false) {
+   
+        document.getElementById("hideforURLParams").style.display = "none";
 
+       
+        var ll = new ol.layer.Tile({
+       
+            source: new ol.source.TileWMS({
+//                id: "testid",
+                url: base,//"https://gis1.servirglobal.net/arcgis/services/Global/MODIS_Landcover_Type1_2001/MapServer/WMSServer",
+                params: {
+                    'LAYERS': lyr, 'TILED': true, 'srs': 'EPSG:3857'
+                },
+                serverType: 'mapserv'
+            })
+        });
+        map.addLayer(ll);
+    }
+}
 // Add a new layer to the map
 function addLayer(layerName, layerid, visible) {
     // Create a new 'OPENLAYERS.layer.Tile
@@ -234,7 +263,8 @@ function addLayer(layerName, layerid, visible) {
 
 var gLayers = [];
 var wmsSource=[],wmsName=[];
-
+var paramstodisplay = [];
+var params = [];
 function addLayersUI() {
     
     var layerarr = [];
@@ -255,6 +285,7 @@ function addLayersUI() {
             })
         });
         idArr.push(layerArray[c].id);
+       paramstodisplay.push(layerArray[c].params);
         catArr.push(layerArray[c].category);
         nameArr.push(layerArray[c].name);
         layerarr.push(ll);
@@ -294,8 +325,12 @@ function addLayersUI() {
             if (this.checked) {
                 wmsSource.push(layer);
                 wmsName.push(this.parentNode.className);
-               
-            
+                //for (var c = 0; c < layerArray.length; c++) {
+                //    if (layerArray[c].name == this.parentNode.className) {
+                //        params.push(layerArray[c].params);
+                //        break;
+                //    }
+                //}
             }
             else {
                 var temp = "";
@@ -306,7 +341,19 @@ function addLayersUI() {
                 var indexN = wmsName.indexOf(this.parentNode.className);
                 if (indexN >= 0) {
                     wmsName.splice(indexN, 1);
+                  
                 }
+                //for (var c = 0; c < layerArray.length; c++) {
+                //    if (layerArray[c].name == this.parentNode.className) {
+                //        var indexP = params.indexOf(layerArray[c].params);
+                //        if (indexP >= 0) {
+                //            params.splice(indexP, 1);
+
+                //        }
+                //        break;
+                //    }
+                //}
+               
                 var tabcon = document.getElementsByClassName("tablinks");
                
                 var cnt = 0;
@@ -522,9 +569,12 @@ closer.onclick = function () {
     closer.blur();
     return false;
 };
+
+
+
 map.on('singleclick', function (evt) {
    
-
+ 
     var cc = 0;
     var cboxes = document.getElementsByClassName("check");
     for (var i = 0; i < cboxes.length; i++) {
@@ -533,24 +583,56 @@ map.on('singleclick', function (evt) {
         }
         
     }
-   // content.innerHTML = "";
-    for (var i = 0; i < cc; i++) {
 
-        var x = 0;
+    for (var i = 0; i < cc; i++) {
+          var x = 0;
 
         var viewResolution = view.getResolution();
         var s_url = wmsSource[i].getSource().getGetFeatureInfoUrl(
                   evt.coordinate, viewResolution, 'EPSG:3857',
                   { 'INFO_FORMAT': 'text/html' });
         if (s_url) {
-
+           var el = document.createElement('html');
+           PageMethods.getHTML(s_url);
+           alert(varfortable);
+           var sparr = varfortable.split('^');     
+            var resphtml = "";
+            var respheaders = [];
+            var respdata = [];
             var parent = document.createElement("div");
             parent.id = "tab" + i;
             parent.className = "tabcontent";
             var child_head = document.createElement("h5");
             child_head.innerHTML = wmsName[i]+": Details";
             var child_body = document.createElement("div");
-            child_body.innerHTML = '<iframe id="'+"iframe"+i+'" seamless src="' + s_url + '"></iframe>';
+            //   child_body.innerHTML = '<iframe id="'+"iframe"+i+'" seamless src="' + s_url + '"></iframe>';
+            var paramval = [];
+            
+            for (var g = 0; g < layerArray.length; g++) {
+                if (layerArray[g].name == wmsName[i]) {
+                    if (layerArray[g].params.length>0)
+                    paramval = (layerArray[g].params).split(',');
+                }
+            }
+ 
+              
+                   
+                    //if respheader has matching value from json add it to the body of popup
+            for (var is = 0; is < sparr.length-1; is++) {
+                for (var kk = 0; kk < paramval.length; kk++) {
+                    if (paramval[kk] == sparr[is].split(':')[0]) {
+
+                        child_body.innerHTML = child_body.innerHTML + '<p><b>' + sparr[is].split(':')[0] + '</b></p><p>' + sparr[is].split(':')[1] + '</p><br/>';
+
+                    }
+
+
+                }
+            }
+                    
+             //   }
+          //  };
+
 
             parent.appendChild(child_head);
             parent.appendChild(child_body);

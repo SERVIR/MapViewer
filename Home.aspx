@@ -5,9 +5,24 @@
     <head>
         <link rel="icon" href="img/main/icon.png">
 <script>
+  
     var myOpVal6 = "999";
     var urlfortimeline;
     var urlt1;
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+    
+                if (pair[0] == variable) {
+                   
+                   return pair[1];
+                }
+        }
+        return (false);
+    }
+ 
 </script>
 <!--        <link rel="stylesheet" href="https://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,6 +65,7 @@
     <title>Map Viewer</title>
      
         <script type="text/javascript">
+           var varfortable = "";
             function resetAll() {
                 $("#selectAction").val("xx");
 
@@ -115,7 +131,12 @@
     
     
 <body class="servir_helper_noScroll_Vert" style="background-color:black;">
-        <div id="popup" class="ol-popup">
+    <form runat="server">
+        <asp:ScriptManager ID="ScriptManager2" runat="server" EnablePageMethods="true" />
+       
+   </form>
+    <div id="githika" runat="server"></div>   
+     <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer" style="color:blue"></a>
         <div id="popup-content">
             <!--<div id="popup-tab"></div>-->
@@ -450,7 +471,7 @@
                             </div>
 
 
-                            <div style="position:fixed;top:0px;background-color:steelblue;height:90px;width:300px">
+                            <div id="hideforURLParams" style="position:fixed;top:0px;background-color:steelblue;height:90px;width:300px;display:block;">
                                <div id="l_img" style="text-align:center;display:inline-block;padding:0 15px;"><a id="layer_icon" class="show" href="#"><img id="l_image" class="main_icons" src="img/main/yellowlayer.png" alt="Layers"><br /><label style="font-weight:bold;padding-left:10px;color:#f5ab63;">Layers</label></a></div>
                                 <div id="b_img" style="text-align:center;display:inline-block;padding:0 15px;"><a id="basemap_icon" class="show" href="#"><img id="b_image" class="main_icons" src="img/main/yellowmap.png" alt="Maps"><br /><label style="font-weight:bold;padding-left:10px;color:#f5ab63;">BaseMaps</label></a></div>
                                <div id="d_img" style="text-align:center;display:inline-block;padding:0 15px;"><a id="data_icon" class="show" href="#"><img id="d_image" class="main_icons" src="img/main/yellowdownload.png" alt="Data"><br /><label style="font-weight:bold;padding-left:10px;color:#f5ab63;">Data</label></a></div>
@@ -829,7 +850,9 @@
 </div>
     <div id="popup_SelectData_DataSource_ToolTip1"> </div>
     <div id="popup_SelectData_Calculations_ToolTip1"> </div>
+       
 <script src="js/timeline.js"></script>
+    <script src="img/main/temp.js"></script>
 <script type="text/javascript" src="js/addLayers.js"></script>
 <script type="text/javascript" src="js/timelineGenerator.js"></script>
 <script>
@@ -845,8 +868,9 @@
 
     ga('create', 'UA-27020636-4', 'auto');
     ga('send', 'pageview');
-
+   
   
 </script>
+   
 </body>
 </html>
