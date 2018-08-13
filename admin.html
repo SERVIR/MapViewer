@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700' rel='stylesheet'
+          type='text/css'>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="favicon.png">
+    <title>Admin</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/style_poly_markers.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <script src="js/jquery-ui.js"></script>
+    <link href="css/sliderstyle2.css" rel="stylesheet" type="text/css" />
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <script type="text/javascript">
+
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD1fSgVZ7KY4VYm_AgjZnG52IxUG5qDVAA",
+            authDomain: "webmapper-c5ce4.firebaseapp.com",
+            databaseURL: "https://webmapper-c5ce4.firebaseio.com",
+            projectId: "webmapper-c5ce4",
+            storageBucket: "webmapper-c5ce4.appspot.com",
+            messagingSenderId: "305592561099"
+        };
+        firebase.initializeApp(config);
+        var db = firebase.firestore();
+        db.settings({ timestampsInSnapshots: true });
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({
+            prompt: 'select_account'
+        });
+        provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                $("#btnGoogleLogin").text("Logout");
+                checkwrite();
+            } else {
+                $("#btnGoogleLogin").text("Login with Google");
+            }
+        });
+        function startLogin() {
+
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                user = result.user;
+            }).catch(function (error) {
+
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+            });
+        }
+        function logout() {
+            firebase.auth().signOut().then(function () {
+                $('#adminForm').hide();
+                $('#userForm').show();
+            }, function (error) {
+                // An error happened.
+            });
+        }
+
+        function toggleAuthentication() {
+            if (firebase.auth().currentUser != null) {
+                logout();
+            } else {
+                startLogin();
+            }
+        }
+        var whatcameback;
+        function checkwrite() {
+            var theKey;
+            try {
+                var docRef = db.collection("map-writer/").where("canwrite", '==', "map-writer");
+                docRef.get().then(function (querySnapshot) {
+                    whatcameback = querySnapshot;
+                    for (let value of querySnapshot.docs.values()) {
+                        theKey = value.id;
+                        writeIt(theKey);
+                    }
+                }).catch(function (err) {
+                    console.log('login needed');
+                });
+            }
+            catch (e) {
+                console.log('no permissions');
+            }
+        }
+        function writeIt(which) {
+            var theDoc = db.collection("map-writer/").doc(which);
+            theDoc.update({
+                "canwrite": 'map-writer'
+            }).then(function () {
+                sizeMain();
+                $('#adminForm').show();
+                $('#userForm').hide();
+                }).catch(function (err) { window.location = "index.html"; });
+        }
+
+        $(window).resize(function () {
+            sizeMain();
+        });
+        $(function () {
+        });
+        function sizeMain() {
+            $('#adminForm').css('height', $(window).height() - $('#nav-wrapper').height() + 'px');
+        }
+        var Key;
+        function addMapService() {
+            console.log('adding service');
+            
+            Key = db.collection("map-services/").doc();
+            var mapservices = db.collection("map-services");
+            var service = {
+                id: Key.id,
+                name: $('#displayname').val(),
+                region: $('#region').val(),
+                category: $('#category').val(),
+                opacity: $('#opacity').val(),
+                url: $('#url').val(),
+                description: $('#description').val(),
+                provider_url: $('#provider_url').val(),
+                legend_url: $('#legend_url').val(),
+                layers: $('#layers').val(),
+                timeseries: $("#timeseries").is(':checked'),
+                params: $('#params').val()
+            }
+            mapservices.doc(Key.id).set(service).then(function () {
+                alert("service successfully added!");
+            });
+            
+            resetForms();
+        }
+        function resetForms() {
+            console.log('Need to write this to clear the form data.')
+        }
+        
+    </script>
+    <link href="css/mapviewer.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="width: 100%; height: 100%; margin: 0;">
+        <div class="sticky">
+            <div class="example3 " id="nav-wrapper">
+                <nav class="navbar navbar-inverse navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar3">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="https://servirglobal.net">
+                                <img src="images/logo.png" alt="SERVIR Global">
+                            </a>
+                        </div>
+                        <div id="navbar3" class="navbar-collapse collapse no-transition">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/">Map Viewer</a></li>
+
+                                <li><a href="#" id="btnGoogleLogin" onclick="toggleAuthentication()">Login with Google</a></li>
+                            </ul>
+                        </div>
+                        <!--/.nav-collapse -->
+                    </div>
+                    <!--/.container-fluid -->
+                </nav>
+            </div>
+            <div id="userForm">
+                <div innerdiv style="    padding: 1.5rem; margin-right: auto; margin-left: auto; border-width: .2rem;     width: 80%;">
+                    <h1 class="page-header text-center">Welcome to the Map Viewer</h1>
+                    <p>If you would like to login please click the login button from the menu bar. Otherwise you may go directly to the <a href="/" alt="Map Viewer" title="Map Viewer">Map Viewer</a></p>
+                </div>
+                </div>
+
+
+                    <div id="adminForm" class="map" style="display:none;">
+                        <div innerdiv style="    padding: 1.5rem; margin-right: auto; margin-left: auto; border-width: .2rem;     width: 80%;">
+                            <h1 class="page-header text-center">New data layer</h1>
+                            <div class="form-group">
+                                <label for="displayname">Display Name:</label><br />
+                                <input type="text" name="displayname" id="displayname" value="" placeholder="Display Name" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="region">Layer region:</label><br />
+                                <input type="text" name="region" id="region" value="" placeholder="Layer region" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Layer category:</label><br />
+                                <input type="text" name="category" id="category" value="" placeholder="Layer category" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="opacity">Layer opacity:</label><br />
+                                <input type="text" name="opacity" id="opacity" value="" placeholder="Layer opacity" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="url">Service url:</label><br />
+                                <input type="text" name="url" id="url" value="" placeholder="Service url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label><br />
+                                <input type="text" name="description" id="description" value="" placeholder="Description" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="provider_url">Provider url:</label><br />
+                                <input type="text" name="provider_url" id="provider_url" value="" placeholder="Provider url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="legend_url">Legend url:</label><br />
+                                <input type="text" name="legend_url" id="legend_url" value="" placeholder="Legend url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="layers">Layers:</label><br />
+                                <input type="text" name="layers" id="layers" value="" placeholder="Layers" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+
+                            <div class="checkbox">
+                                <label for="timeseries">  <input type="checkbox" name="timeseries" id="timeseries" value="" placeholder="Is Time series" class="text ui-widget-content ui-corner-all testforminput" />Is Time series</label><br />
+                            </div>
+                            <div class="form-group">
+                                <label for="params">Parameters:</label><br />
+                                <input type="text" name="params" id="params" value="" placeholder="Parameters" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 text-right">
+                                    <button type="button" class="btn btn-default preview-add-button" id="btnadd" onclick="addMapService()">
+                                        <span class="glyphicon glyphicon-plus"></span>Add
+                                    </button>
+
+                                </div>
+                            </div>
+                            <br class="clearfix" />
+                            <br class="clearfix" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span id="ismobile" class="ismobile"></span>
+</body>
+</html>

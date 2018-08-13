@@ -1,0 +1,291 @@
+.map {
+    overflow: hidden;
+}
+
+    .map .esriMapContainer {
+        position: relative;
+        border: none;
+        padding: 0px;
+        margin: 0px;
+        left: 0px;
+        top: 0px;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        text-align: left;
+    }
+
+        .map .esriMapContainer .esriMapLayers {
+            position: relative;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+            .map .esriMapContainer .esriMapLayers .layerTile, .map .esriMapContainer .esriMapLayers .esri-display-object {
+                position: absolute;
+                border: none;
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .map .esriMapContainer .esriMapLayers > div {
+                pointer-events: none;
+            }
+
+
+        .map .esriMapContainer .esriMapContainer {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+.esriControlsBR {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    z-index: 30;
+    text-align: right;
+}
+
+
+.esriAttribution {
+    font-size: 13px;
+    line-height: 15px;
+    color: #323232;
+    display: inline-block;
+    text-align: left;
+    vertical-align: bottom;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+    margin: 0 5px 0 0;
+    background: rgba(255,255,255,0.7);
+    background: repeat left top url("../images/map/70-percent-white.png")\9;
+}
+
+.esriAttributionOpen {
+    white-space: normal;
+    cursor: pointer;
+}
+
+
+.esriAttributionLastItem span.esriAttributionDelim {
+    display: none;
+}
+
+.map .logo-med {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 65px;
+    height: 36px;
+    z-index: 30;
+    background-image: url("../images/map/logo-med.png");
+    cursor: pointer;
+    _background-image: none;
+}
+
+.map .logo-sm {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 46px;
+    height: 22px;
+    z-index: 30;
+    background-image: url("../images/map/logo-sm.png");
+    cursor: pointer;
+    _background-image: none;
+}
+
+.esriSimpleSlider {
+    position: absolute;
+    text-align: center;
+    border: 1px solid #57585A;
+    background-color: #FFF;
+    color: #4C4C4C;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.esriSimpleSlider div {
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    font-family: verdana,helvetica;
+    line-height: 25px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderIncrementButton {
+    border-bottom: 1px solid #57585A;
+    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderDecrementButton {
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+}
+
+.esriSimpleSliderDecrementButton:hover, .esriSimpleSliderIncrementButton:hover {
+    background-color: #eee;
+}
+
+.esriSimpleSliderDecrementButton:active, .esriSimpleSliderIncrementButton:active {
+    background-color: #ddd;
+}
+
+.esriSimpleSliderDisabledButton, .esriSimpleSliderDisabledButton:active, .esriSimpleSliderDisabledButton:hover {
+    cursor: default;
+    background-color: #f4f4f4;
+    color: #bbb;
+}
+
+.esriIconFallbackText {
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+}
+
+
+.esriPopup {
+    position: absolute;
+    z-index: 40;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.esriPopup .esriPopupWrapper {
+    box-shadow: 0 0 0.75em #777777;
+    -webkit-box-shadow: 0 0 0.75em #777777;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.esriPopup .hidden {
+    display: none;
+}
+
+.esriPopup .sizer {
+    position: relative;
+    width: 270px;
+    z-index: 1;
+}
+
+.esriPopup a {
+    color: #336699;
+    text-decoration: underline;
+}
+
+.esriPopup .titlePane {
+    background-color: #444444;
+    color: #FFFFFF;
+    line-height: 20px;
+    padding-left: 6px;
+    border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    cursor: default;
+}
+
+
+.esriPopup .titlePane .spinner {
+    float: left;
+    margin-top: 2px;
+    margin-right: 4px;
+    cursor: pointer;
+    background: url("../dijit/images/ajax-loader.gif") no-repeat;
+    width: 16px;
+    height: 16px;
+    background-position: 0px 0px;
+}
+
+
+.esriPopupHidden, .esriPopupHidden * {
+    visibility: hidden !important;
+    opacity: 0;
+}
+
+.esriPopup .titleButton {
+    position: absolute;
+    top: 2px;
+    cursor: pointer;
+    background: url("../dijit/images/popup.png") no-repeat;
+}
+
+    .esriPopup .titleButton.prev {
+        right: 64px;
+        background-position: -29px 0;
+        width: 9px;
+        height: 17px;
+    }
+
+.esriPopup .titleButton.next {
+    right: 46px;
+    background-position: -16px 0;
+    width: 9px;
+    height: 17px;
+}
+
+
+.esriPopup .titleButton.maximize {
+    right: 22px;
+    background-position: -55px 0;
+    width: 11px;
+    height: 11px;
+    top: 5px;
+}
+
+.esriPopup .titleButton.close {
+    right: 3px;
+    background-position: 0 0;
+    width: 12px;
+    height: 17px;
+}
+
+.esriPopup .contentPane {
+    position: relative;
+    max-height: 300px;
+    overflow: auto;
+    padding: 10px 6px 6px 10px;
+    background-color: #F7F7F7;
+    color: #333333;
+}
+
+.esriPopup .actionsPane {
+    padding: 2px 10px 4px 10px;
+    background-color: #F7F7F7;
+    border-radius: 0px 0px 5px 5px;
+    -webkit-border-radius: 0px 0px 5px 5px;
+    position: relative;
+}
+
+.esriPopup .pointer, .esriPopup .outerPointer {
+    background: #F7F7F7;
+    display: none;
+    height: 16px;
+    position: absolute;
+    width: 16px;
+    z-index: 0;
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    box-shadow: 0 0 0.75em #777777;
+    -webkit-box-shadow: 0 0 0.75em #777777;
+}
+
