@@ -348,8 +348,9 @@ function addDataToCatagory(data, category) {
     }
     completeLayerList.push(data);
     var clickevent = "toggleLayer('" + data.id + "');";
+    var detailsevent = "loadLayerDetails('"+ data.id +"')";
     var togglebox = '<label class="cblabel"><input id="' + data.id + '" class="bzcheckbox" type="checkbox" value="' + data.id + '" onclick="' + clickevent + '">' + data.name + '</label>'
-    var slider = '<input type="range" name="' + data.id + 'opacity" id="' + data.id + 'opacity" value="100" min="0" max="100" step="1" style="display:none" class="slider"> ';
+    var slider = '<div id="sliderContainer' + data.id + '"> <input type="range" name="' + data.id + 'opacity" id="' + data.id + 'opacity" value="100" min="0" max="100" step="1" style="display:none" class="slider"> <button id="details' + data.id +'" onclick="'+ detailsevent +'" style="float:right;">Details</button> </div>';
     var datahtml = '<div class="card col-sm-12 row-eq-height"><div class="card-body cooltree">' + togglebox + '<br> ' + slider + '</div></div>';
     $('#' + category + 'body').append(datahtml);
 
@@ -404,11 +405,77 @@ function loadmylayers() {
         console.log("Error getting document:", error);
     });
 }
+function loadLayerDetails(layerID) {
+    var theLayer = completeLayerList.find(function (x) { if (x.id === layerID) { return x; } });
+    getLegendHtml(theLayer);
+    //var legendHtml = getLegendHtml(theLayer);
+
+    //var legendText = theLayer.description + '<br> ' + legendHtml;
+    //var $dialog = $('<div></div>')
+    //    .html(legendText)
+    //    .dialog({
+    //        title: theLayer.name
+    //    });
+}
+function openLegend(description, legendHtml, name) {
+    var legendText = description + '<br> ' + legendHtml;
+    var $dialog = $('<div></div>')
+        .html(legendText)
+        .dialog({
+            title: name
+        });
+}
+
+var dbuglegenddata;
+function getLegendHtml(layer) {
+    var url = layer.legend_url;
+    var html = '';
+    if (url.indexOf('f=json') > -1 || url.indexOf('f=pjson') > -1) {
+        var theurl = 'https://proxy.servirglobal.net?url=' + url;
+        var jqxhr = $.getJSON(theurl, function (response) {
+            dbuglegenddata = response;
+            var htmlString = "<table>";
+            if (response != null && response.layers.length > 0) {
+                for (var iCnt = 0; iCnt < response.layers.length; iCnt++) {
+                    lyr = response.layers[iCnt];
+
+                    if (lyr.legend.length > 0) {
+                        var layerName = lyr.layerName;
+                        htmlString += "<tr><td colspan='2' style='font-weight:bold;'>" + layerName + "</td></tr>";
+
+                        for (var jCnt = 0; jCnt < lyr.legend.length; jCnt++) {
+                            var src = url.substr(0, url.indexOf('MapServer/') + 9) + "/" + lyr.layerId + "/images/" + lyr.legend[jCnt].url;
+                            var strlbl = lyr.legend[jCnt].label.replace("<Null>", "Null");
+                            htmlString += "<tr><td align='left' style='padding-left:15px;'><img src=\"" + src + "\" alt ='' /></td><td align='left'>" + strlbl + "</td></tr>";
+                        }
+                    } else {
+                        htmlString += "<tr><td colspan='2' class='tdLayerHeader' style='font-weight:bold;'>" + lyr.layerName + "</td></tr>";
+                        var src = url.substr(0, url.indexOf('MapServer/') + 9) + "/" + lyr.layerId + "/images/" + lyr.legend[0].url;
+                        htmlString += "<tr><td colspan='2' ><img src=\"" + src + "\" alt ='' /></td></tr>";
+                    }
+                }
+                htmlString += "</table>";
+                html = htmlString;
+                openLegend(layer.description, html, layer.name);
+            }
+        })
+            .fail(function () {
+                console.log("error");
+            });
+    
+    }
+    else {
+        html = '<img src="' + url + '" />';
+        openLegend(layer.description, html, layer.name);
+    }
+    
+}
 function toggleLayer(layerID) {
     if (document.getElementById(layerID).checked) {
         turnOnLayer(layerID);
         //show slider
         $('#' + layerID + 'opacity').show();
+        $('#details' + layerID).html("D");
         var theLayer = completeLayerList.find(function (x) { if (x.id === layerID) { return x; } });
         if (theLayer.timeseries) {
             //stop animation
@@ -428,7 +495,7 @@ function toggleLayer(layerID) {
     } else {
         map.getLayer(layerID).setVisibility(false);
         $('#' + layerID + 'opacity').hide();
-
+        $('#details' + layerID).html("Details");
         var theLayer = completeLayerList.find(function (x) { if (x.id === layerID) { return x; } });
         if (theLayer.timeseries) {
             $('#' + theLayer.id + '_active').remove();

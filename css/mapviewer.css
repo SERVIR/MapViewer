@@ -451,10 +451,14 @@ div#info-panel {
     border: 1px solid #d4d4d4;
     height: 20px;
 }
-
+input[type="range"].slider {
+    display: inline-block;
+    margin-top: 8px;
+}
 .slider {
     -webkit-appearance: none;
-    width: 100%;
+    width: calc(100% - 50px) !important;
+    display: inline-block;
     height: 15px;
     border-radius: 5px;
     background: #d3d3d3;
@@ -525,19 +529,31 @@ div#info-panel {
 .ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix.ui-draggable-handle {
     padding: unset;
 }
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-draggable.ui-resizable {
+    max-height: calc(100vh - 100px);
+    z-index: 1000;
+}
 
-.ui-widget-header {
+.ui-dialog-content.ui-widget-content {
+    max-height: calc(100vh - 140px) !important;
+    overflow-y: auto;
+}
+.ui-widget-content {
+    border: 0;
+    box-shadow: #00acec47 2px 2px 2px;
+}
+    .ui-widget-header {
     background: unset;
     background-color: #00acec;
-    color: black !important;
+    color: #fff !important;
     line-height: 35px;
-    padding-left: 6px;
+    padding-left: 6px!important;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     -o-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     cursor: default;
-    border: 1px solid #666666;
+    /*border: 1px solid #666666;*/
     border-bottom: none;
 }
 .ui-datepicker .ui-datepicker-next {
