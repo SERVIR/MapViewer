@@ -1,3 +1,4 @@
 web.config
 web.Debug.config
 /bin/
+/js/firebase.js

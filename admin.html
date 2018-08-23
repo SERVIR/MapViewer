@@ -14,12 +14,19 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/style_poly_markers.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <link rel="stylesheet" href="css/jquery-ui.css">
     <script src="js/jquery-ui.js"></script>
     <link href="css/sliderstyle2.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
     <script src="js/bootstrap.min.js"></script>
-
+    <script src="js/firebase.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
@@ -28,14 +35,7 @@
 
 
         // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyD1fSgVZ7KY4VYm_AgjZnG52IxUG5qDVAA",
-            authDomain: "webmapper-c5ce4.firebaseapp.com",
-            databaseURL: "https://webmapper-c5ce4.firebaseio.com",
-            projectId: "webmapper-c5ce4",
-            storageBucket: "webmapper-c5ce4.appspot.com",
-            messagingSenderId: "305592561099"
-        };
+
         firebase.initializeApp(config);
         var db = firebase.firestore();
         db.settings({ timestampsInSnapshots: true });
@@ -115,7 +115,11 @@
                 sizeMain();
                 $('#adminForm').show();
                 $('#userForm').hide();
-                }).catch(function (err) { window.location = "index.html"; });
+                try {
+                    getData();
+                }
+                catch (e) { console.log(e.message); }
+            }).catch(function (err) { window.location = "index.html"; });
         }
 
         $(window).resize(function () {
@@ -124,16 +128,154 @@
         $(function () {
         });
         function sizeMain() {
-            $('#adminForm').css('height', $(window).height() - $('#nav-wrapper').height() + 'px');
+            var theheight = $(window).height() - ($('#nav-wrapper').height() + 30);
+            $('#adminForm').css('height', theheight + 'px');
+            $('#overflowwrapper').css('height', (theheight - 110) + 'px');
         }
         var Key;
-        function addMapService() {
+        function addMapService(service) {
             console.log('adding service');
+            db.collection("map-services").doc(Key.id).set(service).then(function () {
+                alert("service successfully added!");
+                getData();
+                $('#myModal').modal('toggle');
+            });
+
+            clearInput();
+        }
+        function updateMapService(service) {
+            db.collection("map-services").doc(service.id).update(service)
+
+                .then(function () {
+
+                    getData();
+
+                    $('#myModal').modal('toggle');
+
+                });
+
+        }
+        function resetForms() {
+            console.log('Need to write this to clear the form data.')
+        }
+
+
+
+
+        $(document).ready(function () {
+
+            dtTable = $('#example').DataTable({
+
+                columns: [
+                    { data: "name" },
+
+                    { data: "region" },
+
+                    { data: "category" },
+
+                    { data: "opacity" },
+
+                    { data: "url" },
+
+                    { data: "description" },
+
+                    { data: "provider_url" },
+
+                    { data: "legend_url" },
+
+                    { data: "layers" },
+
+                    { data: "timeseries" },
+
+                    { data: "params" }
+
+                ],
+
+                //columnDefs: [
+
+                //    { targets: [0], visible: false },
+
+                //    { targets: [1], visible: false }
+
+                //]
+
+            });
+
+            dtTable.on('click', 'tr', function () {
+
+                if ($(this).hasClass('selected')) {
+
+                    $(this).removeClass('selected');
+
+                }
+
+                else {
+
+                    dtTable.$('tr.selected').removeClass('selected');
+
+                    $(this).addClass('selected');
+
+                }
+
+                if (dtTable.row(this).data()) {
+
+                    var selectedData = dtTable.row(this).data();
+
+                    //console.log("select=", selectedData);
+
+                    clearInput();
+                    $("#hd-id").val(selectedData.id);
+                    $("#displayname").val(selectedData.name);
+                    $("#region").val(selectedData.region);
+                    $("#category").val(selectedData.category);
+                    $("#opacity").val(selectedData.opacity);
+                    $("#url").val(selectedData.url);
+                    $("#description").val(selectedData.description);
+                    $("#provider_url").val(selectedData.provider_url);
+                    $("#legend_url").val(selectedData.legend_url);
+                    $("#layers").val(selectedData.layers);
+                    $("#timeseries").val(selectedData.timeseries);
+                    $("#params").val(selectedData.params);
+
+                    $('#myModal').modal('show')
+
+                    $("#btnDelete").show();
+
+                }
+
+            });
+
             
-            Key = db.collection("map-services/").doc();
-            var mapservices = db.collection("map-services");
+            $("#btnAdd").on('click', function () {
+
+                clearInput();
+
+                $('#myModal').modal('show');
+
+                $("#btnDelete").hide();
+
+            });
+
+            $("#btnSave").on('click', function () {
+
+                saveData();
+
+            });
+
+
+            $("#btnDelete").on('click', function () {
+
+                deleteData();
+
+            });
+            
+
+        });
+        function saveData() {
+
+            
             var service = {
-                id: Key.id,
+                id: '',
                 name: $('#displayname').val(),
                 region: $('#region').val(),
                 category: $('#category').val(),
@@ -146,18 +288,101 @@
                 timeseries: $("#timeseries").is(':checked'),
                 params: $('#params').val()
             }
-            mapservices.doc(Key.id).set(service).then(function () {
-                alert("service successfully added!");
-            });
-            
-            resetForms();
+
+            if ($("#hd-id").val().length > 0) {
+                service.id = $("#hd-id").val()
+                updateMapService(service);
+            }
+            else {
+                Key = db.collection("map-services/").doc();
+                service.id = Key.id;
+                addMapService(service);
+            }
         }
-        function resetForms() {
-            console.log('Need to write this to clear the form data.')
+        function deleteData() {
+
+            var id = $("#hd-id").val();
+
+            deleteDB(id);
+
         }
-        
+
+        function deleteDB(id) {
+
+            db.collection("map-services").doc(id).delete()
+
+                .then(function () {
+
+                    getData();
+
+                    $('#myModal').modal('toggle');
+
+                });
+
+        }
+
+        function clearInput() {
+            $("#hd-id").val('');
+            $("#displayname").val('');
+            $("#region").val('');
+            $("#category").val('');
+            $("#opacity").val('');
+            $("#url").val('');
+            $("#description").val('');
+            $("#provider_url").val('');
+            $("#legend_url").val('');
+            $("#layers").val('');
+            $("#timeseries").val('');
+            $("#params").val('');
+
+        }
+        function getData() {
+
+            var query = db.collection("map-services");
+
+            query.orderBy("id", "desc")
+
+                .get().then(function (docData) {
+
+                    if (docData.size) {
+
+                        var arrObj = [];
+
+                        docData.forEach(function (data) {
+
+                            var obj = data.data();
+
+                            obj.id = data.id; // assign id to data;
+
+                            arrObj.push(obj);
+
+                        });
+
+                        console.log("data", arrObj);
+
+                        dtTable.clear();
+
+                        dtTable.rows.add(arrObj);
+
+                        //dtTable.draw();
+
+                        dtTable.order([0, 'desc']).draw();
+
+                    } else {
+
+                    }
+
+                }, function (error) {
+
+                    console.log("error=", error);
+
+                });
+
+        }
+
     </script>
     <link href="css/mapviewer.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 </head>
 <body>
     <div style="width: 100%; height: 100%; margin: 0;">
@@ -189,74 +414,164 @@
                 </nav>
             </div>
             <div id="userForm">
-                <div innerdiv style="    padding: 1.5rem; margin-right: auto; margin-left: auto; border-width: .2rem;     width: 80%;">
+                <div style="    padding: 1.5rem; margin-right: auto; margin-left: auto; border-width: .2rem;     width: 80%;">
                     <h1 class="page-header text-center">Welcome to the Map Viewer</h1>
                     <p>If you would like to login please click the login button from the menu bar. Otherwise you may go directly to the <a href="/" alt="Map Viewer" title="Map Viewer">Map Viewer</a></p>
                 </div>
-                </div>
+            </div>
 
 
-                    <div id="adminForm" class="map" style="display:none;">
-                        <div innerdiv style="    padding: 1.5rem; margin-right: auto; margin-left: auto; border-width: .2rem;     width: 80%;">
-                            <h1 class="page-header text-center">New data layer</h1>
-                            <div class="form-group">
-                                <label for="displayname">Display Name:</label><br />
-                                <input type="text" name="displayname" id="displayname" value="" placeholder="Display Name" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="region">Layer region:</label><br />
-                                <input type="text" name="region" id="region" value="" placeholder="Layer region" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Layer category:</label><br />
-                                <input type="text" name="category" id="category" value="" placeholder="Layer category" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="opacity">Layer opacity:</label><br />
-                                <input type="text" name="opacity" id="opacity" value="" placeholder="Layer opacity" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="url">Service url:</label><br />
-                                <input type="text" name="url" id="url" value="" placeholder="Service url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Description:</label><br />
-                                <input type="text" name="description" id="description" value="" placeholder="Description" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="provider_url">Provider url:</label><br />
-                                <input type="text" name="provider_url" id="provider_url" value="" placeholder="Provider url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="legend_url">Legend url:</label><br />
-                                <input type="text" name="legend_url" id="legend_url" value="" placeholder="Legend url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="layers">Layers:</label><br />
-                                <input type="text" name="layers" id="layers" value="" placeholder="Layers" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
+            <div id="adminForm" class="map tab-content" style="display:none;">
+                
+                <div id="editlayers" style="padding: 1.5rem; margin-right: auto; margin-left: auto; border-width:.2rem;" >
+                    <h1 class="page-header text-center">Edit data layers</h1>
+                    <div id="overflowwrapper" style="overflow:auto;">
 
-                            <div class="checkbox">
-                                <label for="timeseries">  <input type="checkbox" name="timeseries" id="timeseries" value="" placeholder="Is Time series" class="text ui-widget-content ui-corner-all testforminput" />Is Time series</label><br />
-                            </div>
-                            <div class="form-group">
-                                <label for="params">Parameters:</label><br />
-                                <input type="text" name="params" id="params" value="" placeholder="Parameters" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12 text-right">
-                                    <button type="button" class="btn btn-default preview-add-button" id="btnadd" onclick="addMapService()">
-                                        <span class="glyphicon glyphicon-plus"></span>Add
+                        
+
+                        <button id="btnAdd" type="button" class="btn btn-primary">
+
+                            Add
+
+                        </button>
+
+                        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>name</th>
+                                    <th>region</th>
+                                    <th>category</th>
+                                    <th>opacity</th>
+                                    <th>url</th>
+                                    <th>description</th>
+                                    <th>provider_url</th>
+                                    <th>legend_url</th>
+                                    <th>layers</th>
+                                    <th>timeseries</th>
+                                    <th>params</th>
+
+
+                                </tr>
+
+                            </thead>
+
+                        </table>
+
+                    </div>
+
+                    
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+
+                        <div class="modal-dialog" role="document">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                                        <span aria-hidden="true">&times;</span>
+
                                     </button>
 
+                                    <h4 class="modal-title" id="exampleModalLabel">New Layer</h4>
+
                                 </div>
+
+                                <div class="modal-body">
+
+                                    <form>
+
+                                        <input type="hidden" id="hd-id">
+
+                                        <div class="form-group">
+                                            <label for="displayname">Display Name:</label><br />
+                                            <input type="text" name="displayname" id="displayname" value="" placeholder="Display Name" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="region">Layer region:</label><br />
+                                            <input type="text" name="region" id="region" value="" placeholder="Layer region" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="category">Layer category:</label><br />
+                                            <input type="text" name="category" id="category" value="" placeholder="Layer category" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="opacity">Layer opacity:</label><br />
+                                            <input type="text" name="opacity" id="opacity" value="" placeholder="Layer opacity" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="url">Service url:</label><br />
+                                            <input type="text" name="url" id="url" value="" placeholder="Service url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description:</label><br />
+                                            <input type="text" name="description" id="description" value="" placeholder="Description" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="provider_url">Provider url:</label><br />
+                                            <input type="text" name="provider_url" id="provider_url" value="" placeholder="Provider url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="legend_url">Legend url:</label><br />
+                                            <input type="text" name="legend_url" id="legend_url" value="" placeholder="Legend url" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="layers">Layers:</label><br />
+                                            <input type="text" name="layers" id="layers" value="" placeholder="Layers" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+
+                                        <div class="checkbox">
+                                            <label for="timeseries">  <input type="checkbox" name="timeseries" id="timeseries" value="" placeholder="Is Time series" class="text ui-widget-content ui-corner-all testforminput" />Is Time series</label><br />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="params">Parameters:</label><br />
+                                            <input type="text" name="params" id="params" value="" placeholder="Parameters" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
+                                        </div>
+                                        
+
+                                    </form>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                    <button id="btnSave" type="button" class="btn btn-primary">Save</button>
+
+                                    <button id="btnDelete" type="button" class="btn btn-error">Delete</button>
+
+                                </div>
+
                             </div>
-                            <br class="clearfix" />
-                            <br class="clearfix" />
+
                         </div>
+
                     </div>
+
+
+
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                            <span aria-hidden="true">&times;</span>
+
+                        </button>
+
+                    </div>
+                    <br style="clear:both; height:200px;" />
                 </div>
             </div>
-            <span id="ismobile" class="ismobile"></span>
+        </div>
+    </div>
+    <span id="ismobile" class="ismobile"></span>
 </body>
 </html>
