@@ -34,17 +34,7 @@ var outData;
 var ourpolygon = '';
 var projectedPoint;
 var db;
-/****************************
-* firebase setup
-****************************/
-var config = {
-    apiKey: "AIzaSyD1fSgVZ7KY4VYm_AgjZnG52IxUG5qDVAA",
-    authDomain: "webmapper-c5ce4.firebaseapp.com",
-    databaseURL: "https://webmapper-c5ce4.firebaseio.com",
-    projectId: "webmapper-c5ce4",
-    storageBucket: "webmapper-c5ce4.appspot.com",
-    messagingSenderId: "305592561099"
-};
+
 
 firebase.initializeApp(config);
 db = firebase.firestore();
