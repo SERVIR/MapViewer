@@ -234,7 +234,7 @@
                     $("#provider_url").val(selectedData.provider_url);
                     $("#legend_url").val(selectedData.legend_url);
                     $("#layers").val(selectedData.layers);
-                    $("#timeseries").val(selectedData.timeseries);
+                    $("#timeseries").prop('checked', selectedData.timeseries);
                     $("#params").val(selectedData.params);
 
                     $('#myModal').modal('show')
