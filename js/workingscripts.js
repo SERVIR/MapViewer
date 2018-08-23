@@ -379,7 +379,7 @@ function closeAll() {
 }
 var theSnap;
 function loadmylayers() {
-    var docRef = db.collection("map-services").orderBy("category");
+    var docRef = db.collection("map-services").orderBy("category").orderBy("name");
     docRef.get().then(function (querySnapshot) {
         theSnap = querySnapshot;
         querySnapshot.forEach(function (doc) {
