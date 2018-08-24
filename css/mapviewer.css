@@ -33,10 +33,6 @@
     box-sizing: border-box;
 }
 
-#adminForm {
-    /*overflow: auto;*/
-}
-
 .parentNode {
     display: none !important;
 }
@@ -57,18 +53,18 @@
         fill-opacity: 0.8;
     }
 
-# map_graphics_layer path:hover {
-    cursor: pointer;
-    animation-duration: 0.2s;
-    animation-name: highlight;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-    -webkit-animation-duration: 0.2s;
-    -webkit-animation-name: highlight;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-fill-mode: both;
-    border-color: blue;
-}
+    #map_graphics_layer path:hover {
+        cursor: pointer;
+        animation-duration: 0.2s;
+        animation-name: highlight;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
+        -webkit-animation-duration: 0.2s;
+        -webkit-animation-name: highlight;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-fill-mode: both;
+        border-color: blue;
+    }
 
 .vertical {
     position: absolute;
@@ -123,6 +119,7 @@
     .handle:hover {
         opacity: 0.6;
     }
+
 
 
 #map_BillyZWMS {
@@ -451,10 +448,12 @@ div#info-panel {
     border: 1px solid #d4d4d4;
     height: 20px;
 }
+
 input[type="range"].slider {
     display: inline-block;
     margin-top: 8px;
 }
+
 .slider {
     -webkit-appearance: none;
     width: calc(100% - 50px) !important;
@@ -502,9 +501,11 @@ input[type="range"].slider {
 .ui-dialog {
     padding: unset;
 }
+
 .ui-datepicker-month, .ui-datepicker-year {
     color: #000;
 }
+
 .ui-dialog .ui-dialog-titlebar-close {
     width: 30px;
     margin: unset;
@@ -515,10 +516,10 @@ input[type="range"].slider {
     background-color: unset;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:hover {
-    background-color: unset;
-    opacity: .8;
-}
+    .ui-dialog .ui-dialog-titlebar-close:hover {
+        background-color: unset;
+        opacity: .8;
+    }
 
 .ui-dialog-titlebar-close:after {
     content: 'X';
@@ -531,6 +532,7 @@ input[type="range"].slider {
 .ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix.ui-draggable-handle {
     padding: unset;
 }
+
 .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-draggable.ui-resizable {
     max-height: calc(100vh - 100px);
     z-index: 1000;
@@ -540,16 +542,18 @@ input[type="range"].slider {
     max-height: calc(100vh - 140px) !important;
     overflow-y: auto;
 }
+
 .ui-widget-content {
     border: 0;
     box-shadow: #00acec47 2px 2px 2px;
 }
-    .ui-widget-header {
+
+.ui-widget-header {
     background: unset;
     background-color: #00acec;
     color: #fff !important;
     line-height: 35px;
-    padding-left: 6px!important;
+    padding-left: 6px !important;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     -o-border-radius: 5px 5px 0 0;
@@ -558,15 +562,17 @@ input[type="range"].slider {
     /*border: 1px solid #666666;*/
     border-bottom: none;
 }
+
 .ui-datepicker .ui-datepicker-next {
     background: unset !important;
     border: 0 !important;
     right: 0 !important;
     top: 0 !important;
 }
-.ui-datepicker .ui-datepicker-next:hover, .ui-datepicker .ui-datepicker-prev:hover {
-    opacity:.8;
-}
+
+    .ui-datepicker .ui-datepicker-next:hover, .ui-datepicker .ui-datepicker-prev:hover {
+        opacity: .8;
+    }
 
 
 .ui-datepicker .ui-datepicker-prev {
@@ -596,6 +602,7 @@ input[type="range"].slider {
     font-weight: normal;
     color: #212121;
 }
+
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     border: 1px solid #fcefa1;
     background: #fbf9ee url(images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;
@@ -808,6 +815,7 @@ input[type="range"].slider {
     #maps-panel img {
         width: 55%;
     }
+
     .esriPopup.esriPopupVisible, .esriPopupWrapper.ui-draggable {
         left: 0 !important;
     }
