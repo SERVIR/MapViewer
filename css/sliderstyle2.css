@@ -104,12 +104,21 @@ right: 10px;
 
 
 button {
-    -moz-border-radius: 10px;
-    background-color: #00acec;
-    padding: 4px 8px 4px;
-    font-size: 1em;
-    color: #ffffff;
+    display: inline-block;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0.317rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", Arial, sans-serif;
     cursor: pointer;
+    -webkit-appearance: none;
+    -webkit-font-smoothing: antialiased;
+    background-color: #00acec;
 }
 
     button:hover {

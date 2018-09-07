@@ -657,6 +657,11 @@ input[type="range"].slider {
     opacity: 1;
 }
 
+.esriPopup.esriPopupVisible {
+    position: fixed !important;
+    z-index: 1001 !important;
+}
+
 .styled-select {
     overflow: hidden;
 }

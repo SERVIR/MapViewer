@@ -54,21 +54,26 @@
     <script src="https://unpkg.com/@esri/arcgis-to-geojson-utils"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script>
+
+        var pathToExtras = '';
+        pathToExtras = window.location.pathname.lastIndexOf('/') == 0 ? window.location.origin : window.location.origin + window.location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
+
         // helpful for understanding dojoConfig.packages vs. dojoConfig.paths:
         // http://www.sitepen.com/blog/2013/06/20/dojo-faq-what-is-the-difference-packages-vs-paths-vs-aliases/
         var dojoConfig = {
+            isDebug: true,
             paths: {
-                extras: location.origin + "/extras"
+                extras: pathToExtras + "/extras"
             }
         };
 
     </script>
     <script src="js/jquery-ui.js"></script>
 
-    <script src="//js.arcgis.com/3.24/" type="text/javascript"></script>
+    <script defer src="//js.arcgis.com/3.24/" type="text/javascript"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-treeview.js"></script>
-    <script src="js/mapviewer.js"></script>
+    <script defer src="js/mapviewer.js"></script>
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
@@ -344,47 +349,47 @@
                 </div>
 
             </div>
-
-            <div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
-                <div id="ServirLogoHolder" style="pointer-events: none;    position: absolute;    bottom: 12px;    z-index: 100;    width: 100%; display:none;">
-                    <div style="margin-left: auto; margin-right: auto; width: 75px; text-align: center;
+            <div class="esriPopup esriPopupVisible" style="z-index: 8675309;"></div>
+                <div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                    <div id="ServirLogoHolder" style="pointer-events: none;    position: absolute;    bottom: 12px;    z-index: 100;    width: 100%; display:none;">
+                        <div style="margin-left: auto; margin-right: auto; width: 75px; text-align: center;
                     width: 50%; max-width: 450px; white-space: nowrap;">
-                        <img src="images/activity_legend.png" alt="Activity Legend" style="max-width: 70%; /* width: 18%; */ min-width: 30px; pointer-events: auto;" title="Activity Legend">
+                            <img src="images/activity_legend.png" alt="Activity Legend" style="max-width: 70%; /* width: 18%; */ min-width: 30px; pointer-events: auto;" title="Activity Legend">
+                        </div>
                     </div>
-                </div>
-                <div id="BasemapToggle">
-                </div>
-                <div id="navtoolHolder">
-                    <div id="navtools">
+                    <div id="BasemapToggle">
+                    </div>
+                    <div id="navtoolHolder">
+                        <div id="navtools">
 
+                        </div>
                     </div>
-                </div>
-                <div id="timeindicator" style="display:none; position:absolute; top:0px; left:0px;"><span id="txtSelectedTime"></span></div>
-                <section id="timeline" style="display:none;">
-                    <div id="myTable">
-                        <div id="timeline-header">
-                            <div id="reportrange" class="pull-right">
-                                <select id="activeTimelineLayer"></select>
+                    <div id="timeindicator" style="display:none; position:absolute; top:0px; left:0px;"><span id="txtSelectedTime"></span></div>
+                    <section id="timeline" style="display:none;">
+                        <div id="myTable">
+                            <div id="timeline-header">
+                                <div id="reportrange" class="pull-right">
+                                    <select id="activeTimelineLayer"></select>
+                                </div>
+                                <div style="width:100%; text-align:center;">
+                                    <button id="btnAnimate" onclick="gotoFirst()" style="background:url(css/images/previous.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                    <button id="btnAnimate" onclick="animateRange()" style="background:url(css/images/play.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                    <button id="btnStop" onclick="stopAnimation()" style="background:url(css/images/pause.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                    <button id="btnAnimate" onclick="gotoLast()" style="background:url(css/images/next.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                </div>
                             </div>
-                            <div style="width:100%; text-align:center;">
-                                <button id="btnAnimate" onclick="gotoFirst()" style="background:url(css/images/previous.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
-                                <button id="btnAnimate" onclick="animateRange()" style="background:url(css/images/play.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
-                                <button id="btnStop" onclick="stopAnimation()" style="background:url(css/images/pause.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
-                                <button id="btnAnimate" onclick="gotoLast()" style="background:url(css/images/next.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
-                            </div>
+
+                            <!--/timeline-header-->
+
+                            <div id="visualization" style="display: table-cell; width:100%; "></div>
+
                         </div>
 
-                        <!--/timeline-header-->
+                    </section>
 
-                        <div id="visualization" style="display: table-cell; width:100%; "></div>
-
-                    </div>
-
-                </section>
-
+                </div>
             </div>
         </div>
-    </div>
     <span id="ismobile" class="ismobile"></span>
     <div id="loadGeoJsonDialog" style="clear:both; display:none;">
         <div class="stitched_drop" style="width:92%; height:100px" id="drop_zone"><center><img style="vertical-align: middle;" src="images/browser-upload.png">   <font size="3">Drop GeoJSON file here</font></center></div>
