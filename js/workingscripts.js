@@ -37,7 +37,7 @@ var db;
 
 
 firebase.initializeApp(config);
-db = firebase.firestore().enablePresistence();
+db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
 
 /****************************
