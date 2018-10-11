@@ -168,6 +168,7 @@ require([
             }
             theInstance.styles = style.slice(0, -1);
             theInstance.url = layerObject.url;
+            
             theInstance.getImageUrl = function (extent, width, height, callback) {
                 var params = {
                     request: "GetMap",
@@ -186,7 +187,9 @@ require([
                     width: width,
                     height: height
                 }
-                callback(this.url + '?' + dojo.objectToQuery(params));
+                var theLayer = completeLayerList.find(function (x) { if (x.id === layerObject.layerName) { return x; } });
+                var theURLParams = theLayer.params ? theLayer.params.trim() + '&' : ''
+                callback(this.url + '?' + theURLParams + dojo.objectToQuery(params));
             };
             myLayers.push(theInstance);
             map.addLayer(myLayers[myLayers.length - 1]);
