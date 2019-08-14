@@ -144,6 +144,9 @@ $(function () {
     try {
         addExpandIcons();
     } catch (e) { }
+    try {
+        loadAllDefaultLayers();
+    } catch (e) { }
 
 });
 
@@ -338,8 +341,12 @@ function addDataToCatagory(data, category) {
     }
     completeLayerList.push(data);
     var clickevent = "toggleLayer('" + data.id + "');";
-    var detailsevent = "loadLayerDetails('"+ data.id +"')";
-    var togglebox = '<label class="cblabel"><input id="' + data.id + '" class="bzcheckbox" type="checkbox" value="' + data.id + '" onclick="' + clickevent + '">' + data.name + '</label>'
+    var detailsevent = "loadLayerDetails('" + data.id + "')";
+    if (!data.defaultload) {
+        data.defaultload = false;
+    }
+    var checked = data.defaultload ? "checked" : "";
+    var togglebox = '<label class="cblabel"><input id="' + data.id + '" class="bzcheckbox" type="checkbox" value="' + data.id + '" onclick="' + clickevent + '" ' + checked+'>' + data.name + '</label>'
     var slider = '<div id="sliderContainer' + data.id + '"> <input type="range" name="' + data.id + 'opacity" id="' + data.id + 'opacity" value="100" min="0" max="100" step="1" style="display:none" class="slider"> <button id="details' + data.id +'" onclick="'+ detailsevent +'" style="float:right;">Details</button> </div>';
     var datahtml = '<div class="card col-sm-12 row-eq-height"><div class="card-body cooltree">' + togglebox + '<br> ' + slider + '</div></div>';
     $('#' + category + 'body').append(datahtml);
@@ -391,9 +398,22 @@ function loadmylayers() {
             addDataToCatagory(moreinfo, cleanme(moreinfo.category));
         });
         addExpandIcons();
+        //setTimeout(loadAllDefaultLayers(), 500);
     }).catch(function (error) {
         console.log("Error getting document:", error);
     });
+}
+
+function loadAllDefaultLayers() {
+    if (map) {
+        completeLayerList.forEach(function (item, index) {
+            if (item.defaultload) {
+                toggleLayer(item.id);
+            }
+        });
+    } else {
+        setTimeout(loadAllDefaultLayers(), 2000);
+    }
 }
 function loadLayerDetails(layerID) {
     var theLayer = completeLayerList.find(function (x) { if (x.id === layerID) { return x; } });

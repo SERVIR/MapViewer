@@ -15,6 +15,7 @@ var gjsonUtils;
 var ggraphic;
 var gsymbol;
 var gPolygon;
+var theDefaultExtent;
 function BillyZ_Layer(objectName, layerName, loadingid, visible, url, layers) {
     this.objectName = objectName;
     this.layerName = layerName;
@@ -23,6 +24,15 @@ function BillyZ_Layer(objectName, layerName, loadingid, visible, url, layers) {
     this.url = url;
     this.layers = layers;
 }
+
+setMapToDefaultExtent = () => {
+    $("#map").show();
+    map.setExtent(theDefaultExtent);
+    window.setTimeout(function () {
+        map.setExtent(theDefaultExtent);
+    }, 300);
+};
+
 require([
 
     "dojo/parser",
@@ -80,7 +90,23 @@ require([
         gjsonUtils = jsonUtils;
         ggraphic = graphic;
         gPolygon = Polygon;
-        fullextent(); map.setZoom(3);
+        //fullextent(); map.setZoom(3);
+
+        var docRef = db.collection("map-defaults/").get().then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach(function (doc) {
+                    myreturn = doc.data();
+                    theDefaultExtent = new esri.geometry.Extent(doc.data().default);
+                    setMapToDefaultExtent();
+                    loadAllDefaultLayers();
+                });
+            } else {
+                fullextent();
+                map.setZoom(3);
+                loadAllDefaultLayers();
+            }
+        });
+
         map.on("load", createToolbar);
         infoTemplate = new InfoTemplate();
 

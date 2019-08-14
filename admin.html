@@ -39,6 +39,41 @@
         #dataLayersTable {
             width: 100% !important;
         }
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+            /* Style the buttons that are used to open the tab content */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                    background-color: #ccc;
+                }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -48,6 +83,20 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.29/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.29/"></script>
+    <script>
+        var map;
+        require(["esri/map"], function (Map) {
+            map = new Map("map", {
+                center: [-118, 34.5],
+                zoom: 8,
+                basemap: "topo"
+            });
+        });
+
+    </script>
+
     <script type="text/javascript">
 
 
@@ -176,7 +225,8 @@
                     { data: "legend_url" },
                     { data: "layers" },
                     { data: "timeseries" },
-                    { data: "params" }
+                    { data: "params" },
+                    { data: "defaultload" }
                 ],
                 columnDefs: [
                     { targets: [3], visible: false },
@@ -185,7 +235,8 @@
                     { targets: [7], visible: false },
                     { targets: [8], visible: false },
                     { targets: [9], visible: false },
-                    { targets: [10], visible: false }
+                    { targets: [10], visible: false },
+                    { targets: [11], visible: false }
                 ]
             });
 
@@ -212,6 +263,7 @@
                     $("#layers").val(selectedData.layers);
                     $("#timeseries").prop('checked', selectedData.timeseries);
                     $("#params").val(selectedData.params);
+                    $("#defaultload").prop('checked', selectedData.defaultload);
                     $('#myModal').modal('show');
                     $("#btnDelete").show();
                 }
@@ -243,7 +295,8 @@
                 legend_url: $('#legend_url').val(),
                 layers: $('#layers').val(),
                 timeseries: $("#timeseries").is(':checked'),
-                params: $('#params').val()
+                params: $('#params').val(),
+                defaultload: $('#defaultload').is(':checked')
             }
 
             if ($("#hd-id").val().length > 0) {
@@ -282,8 +335,9 @@
             $("#layers").val('');
             $("#timeseries").val('');
             $("#params").val('');
-
+            $("#defaultload").val('');
         }
+        var myreturn;
         function getData() {
             var query = db.collection("map-services");
             query.orderBy("id", "desc")
@@ -294,11 +348,13 @@
                         docData.forEach(function (data) {
                             var obj = data.data();
                             obj.id = data.id;
+                            if (!obj.defaultload) {
+                                obj.defaultload = false;
+                            }
                             arrObj.push(obj);
 
                         });
-
-                        console.log("data", arrObj);
+                        
                         dtTable.clear();
                         dtTable.rows.add(arrObj);
                         dtTable.order([0, 'desc']).draw();
@@ -311,6 +367,101 @@
                 }, function (error) {
                     console.log("error=", error);
                 });
+            // also get map defaults and set the map extent map.setExtent(return data);
+
+            var docRef = db.collection("map-defaults/").get().then(querySnapshot => {
+                if (!querySnapshot.empty) {
+                    querySnapshot.forEach(function (doc) {
+                        myreturn = doc.data();
+                        theDefaultExtent = new esri.geometry.Extent(doc.data().default);
+                        setMapToDefaultExtent();
+                    });
+                } else {
+                    fullextent();
+                    map.setZoom(3);
+                }
+            });
+        }
+
+        setMapToDefaultExtent = () => {
+            $("#map").show();
+            map.setExtent(theDefaultExtent);
+            window.setTimeout(function () {
+                map.setExtent(theDefaultExtent);
+            }, 500);
+        };
+
+        var theDefaultExtent;
+        openTab = (evt, which) => {
+            var setExtent = true;
+            if (which == "editlayers") {
+                $("#editmap").hide();
+                setExtent = false;
+            } else {
+                $("#editlayers").hide();
+                $("#map").hide();
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            evt.currentTarget.className += " active";
+            $("#" + which).show(0, function () {
+                if (setExtent) {
+                    setMapToDefaultExtent();
+                    
+                }
+            });
+        }
+        setDefaultExtent = () => {
+            var docRef = db.collection("map-defaults/").get().then(querySnapshot => {
+                var defaultKey;
+                if (!querySnapshot.empty) {
+                    //We know there is one doc in the querySnapshot
+                    for (let value of querySnapshot.docs.values()) {
+                        defaultKey = value.id;
+                    }
+                }
+                var theJson = JSON.parse(JSON.stringify(map.extent));
+                if (defaultKey) {
+                    var theDoc = db.collection("map-defaults/").doc(defaultKey);
+                    theDoc.update({
+                        "default": theJson
+                    })
+                        .then(function () {
+                            displayTopToastMessage("Configuration successfully written!");
+                        })
+                        .catch(function (error) {
+                            displayTopToastMessage("Error writing Configuration: ", true);
+                        });
+                } else {
+                    defaultKey = db.collection("map-defaults").doc().id;
+                    db.collection("map-defaults").doc(defaultKey).set({ "default": theJson }).then(function () {
+                        displayTopToastMessage("Configuration successfully written!");
+                    })
+                        .catch(function (error) {
+                            displayTopToastMessage("Error writing Configuration: ", true);
+                        });
+                }
+            });
+        }
+
+        displayTopToastMessage = (message, error) => {
+            var x = document.getElementById("snackbar");
+            x.innerHTML = message;
+            // Add the "show" class to DIV
+            if (error) {
+                x.className = "top show error";
+            } else {
+                x.className.replace("error", "");
+                x.className = "top show";
+            }
+            // After 5 seconds, remove the show class from DIV
+            setTimeout(() => { x.className = x.className.replace("show", ""); }, 4900);
+        }
+
+        function fullextent() {
+            map.setExtent(new esri.geometry.Extent(-13951897.898832941, -6785794.611636344, 13951897.898832941, 11255790.048565581, new esri.SpatialReference({ wkid: 3857 })));
         }
     </script>
     <link href="css/mapviewer.css" rel="stylesheet" />
@@ -354,7 +505,10 @@
 
 
             <div id="adminForm" class="map tab-content" style="display:none;">
-
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'editlayers')">Edit data layers</button>
+                    <button class="tablinks" onclick="openTab(event, 'editmap')">Set default map properties</button>
+                </div>
                 <div id="editlayers" style="padding: 1.5rem; margin-right: auto; margin-left: auto; border-width:.2rem;">
                     <h1 class="page-header text-center">Edit data layers</h1>
                     <div id="overflowwrapper" style="overflow:auto;">
@@ -384,7 +538,7 @@
                                     <th>layers</th>
                                     <th>timeseries</th>
                                     <th>params</th>
-
+                                    <th>defaultload</th>
 
                                 </tr>
 
@@ -464,7 +618,9 @@
                                             <label for="params">Parameters:</label><br />
                                             <input type="text" name="params" id="params" value="" placeholder="Parameters" class="text ui-widget-content ui-corner-all testforminput fullwidth adminInput" /><br />
                                         </div>
-
+                                        <div class="checkbox">
+                                            <label for="defaultload">  <input type="checkbox" name="defaultload" id="defaultload" value="" placeholder="Load by default" class="text ui-widget-content ui-corner-all testforminput" />Load by default</label><br />
+                                        </div>
 
                                     </form>
 
@@ -501,9 +657,51 @@
                     </div>
                     <br style="clear:both; height:200px;" />
                 </div>
+                <div id="editmap" style="display:none; position:relative; height:calc(100vh - 220px); width:100%">
+                    <p>Zoom and pan to the extent you would like the map to start for all users, then click save <button class="btn btn-primary" onclick="setDefaultExtent()">Save</button></p>
+                    <div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'" style="position:absolute; width:100%; height:100%">
+                        <div id="ServirLogoHolder" style="pointer-events: none;    position: absolute;    bottom: 12px;    z-index: 100;    width: 100%; display:none;">
+                            <div style="margin-left: auto; margin-right: auto; width: 75px; text-align: center;
+                    width: 50%; max-width: 450px; white-space: nowrap;">
+                                <img src="images/activity_legend.png" alt="Activity Legend" style="max-width: 70%; /* width: 18%; */ min-width: 30px; pointer-events: auto;" title="Activity Legend">
+                            </div>
+                        </div>
+                        <div id="BasemapToggle">
+                        </div>
+                        <div id="navtoolHolder">
+                            <div id="navtools">
+
+                            </div>
+                        </div>
+                        <div id="timeindicator" style="display:none; position:absolute; top:0px; left:0px;"><span id="txtSelectedTime"></span></div>
+                        <section id="timeline" style="display:none;">
+                            <div id="myTable">
+                                <div id="timeline-header">
+                                    <div id="reportrange" class="pull-right">
+                                        <select id="activeTimelineLayer"></select>
+                                    </div>
+                                    <div style="width:100%; text-align:center;">
+                                        <button id="btnAnimate" onclick="gotoFirst()" style="background:url(css/images/previous.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                        <button id="btnAnimate" onclick="animateRange()" style="background:url(css/images/play.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                        <button id="btnStop" onclick="stopAnimation()" style="background:url(css/images/pause.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                        <button id="btnAnimate" onclick="gotoLast()" style="background:url(css/images/next.png) no-repeat; background-size: cover; margin: 2px 4px 0px 4px; width:30px; background-color: #4dc5f2; border: 1px solid #4dc5f2;">&nbsp;</button>
+                                    </div>
+                                </div>
+
+                                <!--/timeline-header-->
+
+                                <div id="visualization" style="display: table-cell; width:100%; "></div>
+
+                            </div>
+
+                        </section>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <span id="ismobile" class="ismobile"></span>
+    <div id="snackbar" class="top"></div>
 </body>
 </html>
